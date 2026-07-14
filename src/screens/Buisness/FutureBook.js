@@ -1,0 +1,398 @@
+import React, { useState, useContext } from 'react'
+import { useFocusEffect } from '@react-navigation/native';
+import {
+    View,
+    StyleSheet,
+    TouchableOpacity,
+    FlatList,
+    ScrollView,
+    TextInput,
+    SafeAreaView,
+    Alert,
+    Modal,
+    Pressable
+  } from 'react-native';
+import moment from 'moment';
+import Toast from 'react-native-simple-toast'
+import * as ApiService from '../../Utils/Utils';
+import AuthContext from '../../context/AuthContext';
+import Spinner from 'react-native-loading-spinner-overlay/lib';
+import { GlobalColor } from '../../constants/Colors';
+import { LoadingScreen } from '../../components/reusable/LoadingScreen';
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import Text from '../../components/reusable/Text';
+import { GlobalFontSize } from '../../constants/FontSize';
+import Button from '../../components/reusable/Button';
+
+
+export default function FutureBook() {
+
+    const [futureData, setFutureData] = useState([])
+    const { authContext, AppUserData } = useContext(AuthContext);
+    const [loader, setLoader] = useState(false);
+    const [refresh, setrefresh] = useState(false);
+    const [firstDate, setFirstDate] = useState('');
+    const [secondDate, setSecondDate] = useState('');
+    const [modalVisible, setmodalVisible] = useState(false);
+    const [BookingDetail, setBookingDetail] = useState({});
+
+
+    
+    const stopLoader = () => {
+            try {
+            setLoader(false);
+            setrefresh(false);
+            } catch(error){
+// $&
+            }
+        }
+
+
+    const GetShutlPastFutrReportApi = () => {
+        let token = AppUserData.token
+        let userId = AppUserData?.data?.userId
+        let apiData = {
+            BKDTEmplID: userId,
+            BKDTFlag: "F",
+            FromDate: '',
+            ToDate: '',
+        }
+        setLoader(true);
+        ApiService.PostMethode('/GetShuttlePastFutureReport', apiData, token, authContext)
+            .then(result => {
+// $&
+                stopLoader(false);
+                let ApiValue = result.Value
+                setFutureData(ApiValue)
+                // let array = [];
+                // for (let index = 0; index < 10; index++) {
+                //     array.push(ApiValue[0])                    
+                // }
+                // setFutureData(array)
+            })
+
+            .catch(error => {
+                stopLoader(false);
+// $&
+                ApiService.showErrorMessage(error, authContext);
+            });
+    };
+    const BookingDetailApi = (data) => {
+        let token = AppUserData.token
+        let apiData = {
+            BKDTID: data.BKDT_ID,
+        }
+        // // console.log($1);
+        // return;
+        // setLoader(true);
+        setmodalVisible(true);
+        ApiService.PostMethode('/BookingDetail', apiData, token, authContext)
+            .then(result => {
+// $&
+                setLoader(false);
+                if(result.Value &&result.Value.length > 0){
+                    let ApiValue = result.Value;
+                    setBookingDetail(ApiValue[0]);
+                    setmodalVisible(true);
+                }else{
+                    Toast.show("Details not found")
+                }
+
+            })
+            .catch(error => {
+                setLoader(false);
+                // // console.log($1);
+                 ApiService.showErrorMessage(error, authContext);
+            });
+    };
+
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const unsubscribe = GetShutlPastFutrReportApi();
+            return () => unsubscribe;
+        }, [])
+    )
+
+
+    if (loader) {
+        return (
+            <SafeAreaView style={{
+                flex: 1,
+                backgroundColor: GlobalColor.White,
+            }}>
+                <LoadingScreen />
+            </SafeAreaView>
+        )
+    }
+
+
+    const confirmCancel= (userId)=>{
+        setmodalVisible(!modalVisible);
+        Alert.alert(
+            "Confirm?",
+            "Please confirm you want to cancel this booking",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => BookShuttleSeatApi(userId)}
+            ]
+          );
+    }
+
+
+
+    const BookShuttleSeatApi = (userIDNum) => {
+
+        let token = AppUserData.token
+        let userId = AppUserData?.data?.userId
+        let apiData = 
+            {
+                "BKDTID":userIDNum.BKDT_ID,
+                "BKDTShtlID":userIDNum.BKDT_SHTL_RTMP_ID,
+                "BKDTEmplID":userIDNum.BKDT_EMPL_ID,
+                "StartDate":moment().format("DD-MMMM-YYYY"),
+                "EndDate":moment().format("DD-MMMM-YYYY"),
+                "Reason":"",
+                "BKDTFlag":"C",
+                "BKDTUser":userId
+            };        
+        // console.log("apiData", apiData)
+        setLoader(true);
+        ApiService.PostMethode('/BookShuttleSeat', apiData, token, authContext)
+            .then(result => {
+                setLoader(false);
+// $&
+                let responseData = result;
+                Toast.show(result.Result);
+                GetShutlPastFutrReportApi();
+            })
+            .catch(error => {
+                setLoader(false);
+                // // console.log($1);
+                ApiService.showErrorMessage(error, authContext);
+            });
+    }
+
+
+
+    const ItemRender = ({item})=>{
+        return(
+            <TouchableOpacity style={styles.cardContainer} onPress={()=>{
+                BookingDetailApi(item);
+            }}>
+                <View style={styles.cardRow}>
+                    <View style={styles.cardColumn}>
+                        <Text style={styles.cardLabel}>Date</Text>
+                        <Text Bold style={styles.cardValue}>{moment(item.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>
+                    </View>
+                    <View style={styles.cardColumn}>
+                        <Text style={styles.cardLabelRight}>Employee ID</Text>
+                        <Text Bold style={styles.cardValueRight}>{item.BKDT_EMPL_ID}</Text>
+                    </View>                    
+                </View>
+                <View style={styles.cardRow}>
+                    <View style={styles.cardColumn}>
+                        <Text style={styles.cardLabel}>Booking ID</Text>
+                        <Text Bold style={styles.cardValue}>{item.BKDT_ID}</Text>
+                    </View>
+                    <View style={styles.cardColumn}>
+                        <Text style={styles.cardLabelRight}>Source</Text>
+                        <Text Bold style={styles.cardValueRight}>{item.ROUT_SOURCE}</Text>
+                    </View>                    
+                </View>
+                <View style={styles.cardRow}>
+                    <View style={styles.cardColumn}>
+                        <Text style={styles.cardLabel}>Destination</Text>
+                        <Text Bold style={styles.cardValue}>{item.ROUT_DESTINATION}</Text>
+                    </View>
+                    <View style={styles.cardColumn}>
+                        <Text style={styles.cardLabelRight}>Status</Text>
+                        <Text Bold style={styles.cardValueRight}>{item.BKDT_STATUS_FLAG}</Text>
+                    </View>                    
+                </View>                
+            </TouchableOpacity> 
+        )
+    }
+
+
+    return (
+        <SafeAreaView
+            style={styles.container}>
+            {loader == true ? (
+                <Spinner
+                    visible={loader}
+                    textContent={'Loading...'}
+                    textStyle={{ color: '#fff' }}
+                />
+            ) : null}
+
+            <FlatList
+                contentContainerStyle={{ flexGrow:1, marginTop:10, paddingBottom:10 }}
+                data={futureData}
+                style={{marginBottom:"25%"}}
+                renderItem={ItemRender}
+                keyExtractor={item => item.id}                
+                ListEmptyComponent={<ListEmptyComponent 
+                    title="No Data Found"
+                    enableRefresh={true} onRefreshCallback={()=>GetShutlPastFutrReportApi(true)} refreshing={refresh}
+                    ></ListEmptyComponent>
+                }
+            />
+
+    <Modal
+        // animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setmodalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text Bold style={styles.modalTextHeading}>Booking Detail</Text>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Booking Id:</Text>
+                <Text style={{fontSize:13}} Bold>{BookingDetail.BKDT_ID}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Registration No.:</Text>
+                <Text style={{fontSize:13}} Bold>{BookingDetail.SHTL_REGISTRATION_NO}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Booking For:</Text>
+                <Text style={{fontSize:13}} Bold>{BookingDetail.BKDT_EMPL_ID}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Name:</Text>
+                <Text style={{fontSize:13}} Bold>{BookingDetail.EMPL_NAME}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Date:</Text>
+                <Text style={{fontSize:13}} Bold>{moment(BookingDetail.BKDT_START_DATE).format("MM-DD-YY").toUpperCase()}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Source:</Text>
+                <Text style={{fontSize:13}} Bold>{BookingDetail.ROUT_SOURCE}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Destination:</Text>
+                <Text  style={{fontSize:13}} Bold>{BookingDetail.ROUT_DESTINATION}</Text>                
+            </View>
+
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Time:</Text>
+                <Text style={{fontSize:13}} Bold>{BookingDetail.ROUT_START_TIME}</Text>                
+            </View>
+            <View style={styles.modalrow}>
+                <Text style={{fontSize:13}} Bold>Status:</Text>
+                <Text style={{fontSize:13}} Bold>{BookingDetail.BKDT_STATUS_FLAG}</Text>                
+            </View>
+            <View style={styles.modalButtons}>
+                <Button title="Ok" style={{fontSize:13}} btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>setmodalVisible(!modalVisible)}/>
+                {
+                   BookingDetail.BKDT_STATUS_FLAG == 'Booked' ? (
+                        <Button title="Cancel Booking" style={{fontSize:13}} btnStyle={styles.ButtonWidth} textStyle={styles.ButtonWidthText} onPress={()=>confirmCancel(BookingDetail)}/>
+                    ): null
+                }
+            </View>
+            
+          </View>
+        </View>
+      </Modal>
+    </SafeAreaView>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '100%',
+        backgroundColor: GlobalColor.PrimaryLight, 
+        paddingHorizontal:10,
+    },
+
+    ListContainer: {
+        width: '100%',
+        paddingVertical: 10,
+    },
+    ListContent:{
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        borderBottomWidth: 1,
+        borderBottomColor: '#43C6DB',
+    },
+    cardContainer:{
+        backgroundColor:GlobalColor.White,
+        borderWidth:1,
+        borderColor:'#43C6DB',
+        borderRadius:5, 
+        padding:10, 
+        marginBottom:10
+    },
+    cardRow:{
+        flexDirection:'row', 
+        justifyContent:'space-between',
+        marginBottom:10,
+    },
+    cardValueRight:{
+        textAlign:'right',
+        color:GlobalColor.Primary,
+        fontSize:13
+    },
+    cardLabel:{
+        color:GlobalColor.Primary,
+        fontSize:13
+    },
+    cardValue:{
+        
+        fontSize:13
+    },
+    cardLabelRight:{
+        textAlign:'right',
+        color:GlobalColor.Primary,
+        fontSize:13
+    },
+    centeredView:{
+        backgroundColor:'rgba(0,0,0,0.5)',
+        flex:1, 
+        justifyContent:'center',
+        alignItems:'center'
+    },
+    modalView:{
+        width:"80%",
+        backgroundColor:GlobalColor.White,
+        padding:10,
+        paddingHorizontal:15
+    },
+    modalTextHeading:{
+        fontSize:13,
+        marginBottom:10
+    },
+    modalrow:{
+        flexDirection:'row', 
+        justifyContent:'space-between', 
+        marginTop:10, 
+    },
+    modalButtons:{
+        flexDirection:'row',
+        justifyContent:'space-between',
+        marginTop:15
+    },
+    ButtonWidth:{
+        // width:'45%',
+        flex:0.5,
+        borderRadius:0
+    },
+    ButtonWidthText:{
+        fontSize:GlobalFontSize.Error
+    }
+});
+

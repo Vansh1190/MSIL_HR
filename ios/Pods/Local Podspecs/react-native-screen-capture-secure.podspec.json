@@ -1,0 +1,25 @@
+{
+  "name": "react-native-screen-capture-secure",
+  "version": "1.0.5",
+  "summary": "android screen capture disable/ios alertview",
+  "description": "react-native-screen-capture-secure",
+  "homepage": "https://github.com/github_account/react-native-screen-capture-secure",
+  "license": "MIT",
+  "authors": {
+    "Your Name": "yourname@email.com"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "https://github.com/github_account/react-native-screen-capture-secure.git",
+    "tag": "1.0.5"
+  },
+  "source_files": "ios/**/*.{h,m,swift}",
+  "requires_arc": true,
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

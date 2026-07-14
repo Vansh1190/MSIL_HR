@@ -1,0 +1,568 @@
+import React, {useState, useEffect, useContext, useRef} from 'react';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+  SafeAreaView,
+  Alert,
+  FlatList,
+} from 'react-native';
+import {TextInput} from 'react-native-gesture-handler';
+import {Formik} from 'formik';
+import * as yup from 'yup';
+import Spinner from 'react-native-loading-spinner-overlay';
+import Text from '../../components/reusable/Text';
+import {Header} from '../../components/reusable/Header';
+import {GlobalColor} from '../../constants/Colors';
+import Button from '../../components/reusable/Button';
+import {LoadingScreen} from '../../components/reusable/LoadingScreen';
+import SelectDropdown from 'react-native-select-dropdown';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import moment from 'moment';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import DatePicker from 'react-native-date-picker';
+import AuthContext from '../../context/AuthContext';
+import * as ApiService from '../../Utils/Utils';
+import {showErrorMessage} from '../../Utils/Utils';
+import {DataTable} from 'react-native-paper';
+import Toast from 'react-native-simple-toast';
+import {Decrypt} from '../../Service/Helper';
+
+import ListEmptyComponent from '../../components/reusable/ListEmptyComponent';
+import {GlobalFontSize} from '../../constants/FontSize';
+const ConveyanceBillsSubmission = ({navigation, route}) => {
+  const fromRef = useRef(null);
+  const dropdownRef = useRef({});
+
+  // let pageName = route.params.pageName
+  // // console.log($1);
+
+  const [loader, setLoader] = useState(false);
+  const [date, setDate] = useState(new Date());
+  const [FuelType, setFuelType] = useState('');
+  const [refresh, setrefresh] = useState(false);
+  const [open, setOpen] = useState(false);
+  // const [refresh, setrefresh] = useState(false);
+  const {authContext, AppUserData} = useContext(AuthContext);
+  const [Bill, setBill] = useState('');
+  const [FuelValue, setFuelValue] = useState([]);
+
+  const loginValidationSchema = yup.object().shape({
+    BillNo: yup.string().required('Bill No. is required').max(10, "Max length 10"),
+    BillDate: yup.string().required('Bill Date is required'),
+    BillAmount: yup.string().required('Amount is required').max(10, "Max length 10"),
+    BillKMR: yup.string().required('Mileage is required').max(10, "Max length 10"),
+    BillType: yup.string().required('Fuel Type is required'),
+  });
+
+  const GetConvElig = (loader = true) => {
+    let token = AppUserData.token;
+    let EmplID = AppUserData?.data?.userId;
+    let userNt = AppUserData?.data?.userNT;
+// $&
+    let apiData = {
+      StaffNo: EmplID,
+    };
+    if(loader){
+      setLoader(true);
+    }
+
+    //Set Loader
+    ApiService.PostMethode('/reportCONV', apiData, token, authContext)
+      .then(result => {
+// $&
+        setBill(result.Value);
+        //stop Loader
+        stopLoader();
+      })
+      .catch(error => {
+        //stop Loader
+        stopLoader();
+        //Show Error Massage
+        ApiService.showErrorMessage(error, authContext);
+      });
+  };
+
+  const FuelConvElig = () => {
+    let token = AppUserData.token;
+    let EmplID = AppUserData?.data?.userId;
+// $&
+    let apiData = {};
+
+    //Set Loader
+    setLoader(true);
+
+    ApiService.PostMethode('/getLovmConv', apiData, token, authContext)
+      .then(result => {
+// $&
+        let FuelData = result.Value;
+        let FuelValue = [];
+
+        FuelData.map(data => {
+          FuelValue.push({
+            id: data.LOVM_VALUE_CODE,
+            title: data.LOVM_VALUE_DESC,
+          });
+        });
+// $&
+        setFuelValue(FuelValue);
+        //stop Loader
+        stopLoader();
+      })
+      .catch(error => {
+// $&
+        //stop Loader
+        stopLoader();
+        //Show Error Massage
+        ApiService.showErrorMessage(error, authContext);
+      });
+  };
+
+  const SubmitConveyance = values => {
+    Alert.alert('Payroll', 'Are you sure to submit?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          let token = AppUserData.token;
+          let EmplID = AppUserData?.data?.userId;
+          let userNt = AppUserData?.data?.userNT;
+// $&
+          let apiData = {
+            UserName: userNt,
+            ...values,
+          };
+
+          apiData.BillDate = moment(apiData.BillDate).format('DD-MMM-YYYY');
+// $&
+          // return;
+          //Set Loader
+          setLoader(true);
+          ApiService.PostMethode(
+            '/SubmitConveyBill',
+            apiData,
+            token,
+            authContext,
+          )
+            .then(result => {
+              stopLoader();
+              if (result.Result) {
+// $&
+                fromRef.current.resetForm();
+                dropdownRef.current.reset();
+                setTimeout(() => {
+                  Toast.show(result.Result);                  
+                }, 100);
+                GetConvElig(false);
+              } else {
+                Toast.show('Failed to submit try again');
+              }
+            })
+            .catch(error => {
+// $&
+              //stop Loader
+              stopLoader();
+              //Show Error Massage
+              ApiService.showErrorMessage(error, authContext);
+            });
+        },
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    GetConvElig();
+    FuelConvElig();
+  }, []);
+
+  const stopLoader = () => {
+    setLoader(false);
+    setrefresh(false);
+  };
+
+  return (
+    <SafeAreaView style={styles.container}>
+      {loader == true ? (
+        <Spinner
+          visible={loader}
+          textContent={'Loading...'}
+          textStyle={styles.spinnerTextStyle}
+        />
+      ) : null}
+      <Header title="Conveyance Bills" />
+      <ScrollView style={styles.container}>
+        <Formik
+          innerRef={fromRef}
+          validationSchema={loginValidationSchema}
+          initialValues={{
+            BillNo: '',
+            BillDate: '',
+            BillAmount: '',
+            BillKMR: '',
+            BillType: '',
+          }}
+          onSubmit={values => {
+            SubmitConveyance(values);
+          }}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            setFieldValue,
+            values,
+            errors,
+            touched,
+            isValid,
+          }) => (
+            <View style={{paddingHorizontal: 10,}}>
+              <View
+                style={{
+                  width: '100%',
+                  // alignSelf: 'center',
+                  justifyContent: 'center',
+                  marginTop: 10,
+                  paddingVertical: 10,
+                  backgroundColor: GlobalColor.White,
+                  shadowColor: GlobalColor.Black,
+                  shadowOffset: {
+                    width: -0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.22,
+                  shadowRadius: 2.22,
+                  elevation: 5,
+                  borderRadius: 5,
+                  marginBottom: 10,
+                }}>
+                <View style={styles.box}>
+                  <Text Bold style={{fontSize:13}}>Bill No.</Text>
+                  <View style={{width: '60%'}}>
+                    <TextInput
+                      style={{
+                        height: 35,
+                        borderBottomWidth: 0.5,
+                        borderColor: GlobalColor.LightDark,
+                        textAlign: 'left',
+                        fontSize:13
+                      }}
+                      keyboardType={'numeric'}
+                      onChangeText={handleChange('BillNo')}
+                      onBlur={handleBlur('BillNo')}
+                      value={values.BillNo}
+                    />
+                    {errors.BillNo && touched.BillNo && (
+                      <View
+                        style={{
+                          paddingVertical: 2,
+                        }}>
+                        <Text style={styles.error}>{errors.BillNo}</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+
+                <View style={[styles.box]}>
+                  <Text Bold style={{fontSize:13}}>Bill Date</Text>
+                  <View style={{width: '60%'}}>
+                    <DatePicker
+                      modal
+                      mode="date"
+                      open={open}
+                      date={date}
+                      onConfirm={date => {
+                        setOpen(false);
+                        setDate(date);
+                        setFieldValue('BillDate', date);
+                      }}
+                      onCancel={() => {
+                        setOpen(false);
+                      }}
+                    />
+                    <TouchableOpacity
+                      style={{
+                        width: '100%',
+                        backgroundColor: GlobalColor.White,
+                        borderWidth: 1,
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        padding: 6,
+                        alignSelf: 'center',
+                        borderColor: '#43C6DB',
+                      }}
+                      onPress={() => setOpen(true)}>
+                      <Text style={{color: 'gray',fontSize:13}} Bold>
+                        {values.BillDate
+                          ? moment(values.BillDate).format('MMM Do YYYY')
+                          : null}
+                      </Text>
+                      <View>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            // width: 65,
+                            justifyContent: 'space-around',
+                          }}>
+                          <Ionicons
+                            name="calendar-outline"
+                            size={20}
+                            color={'#43C6DB'}
+                          />
+                        </View>
+                      </View>
+                    </TouchableOpacity>
+
+                    {errors.BillDate && touched.BillDate && (
+                      <View
+                        style={{
+                          paddingVertical: 2,
+                        }}>
+                        <Text style={styles.error}>{errors.BillDate}</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+
+                <View style={[styles.box, {paddingVertical: 5}]}>
+                  <Text Bold style={{fontSize:13}}>Fuel Type</Text>
+                  <View>
+                    <View
+                      style={{
+                        borderWidth: 1,
+                        borderColor: '#43C6DB',
+                      }}>
+                      <SelectDropdown
+                        ref={dropdownRef}
+                        defaultButtonText="Fuel Type"
+                        dropdownIconPosition={'right'}
+                        data={FuelValue}
+                        onSelect={(selectedItem, index) => {
+                          setFuelType(selectedItem);
+                          setFieldValue('BillType', selectedItem.id);
+                        }}
+                        buttonTextAfterSelection={(selectedItem, index) => {
+                          return selectedItem.title;
+                        }}
+                        rowTextForSelection={(item, index) => {
+                          return item.title;
+                        }}
+                        buttonStyle={styles.dropdown2BtnStyle}
+                        buttonTextStyle={styles.dropdown2BtnTxtStyle}
+                        renderDropdownIcon={isOpened => {
+                          return (
+                            <FontAwesome
+                              name={isOpened ? 'chevron-up' : 'chevron-down'}
+                              color={'#43C6DB'}
+                              size={14}
+                            />
+                          );
+                        }}
+                        dropdownStyle={styles.dropdown2DropdownStyle}
+                        rowStyle={styles.dropdown2RowStyle}
+                        rowTextStyle={styles.dropdown2RowTxtStyle}
+                      />
+                    </View>
+
+                    {errors.BillType && touched.BillType && (
+                      <View
+                        style={{
+                          paddingVertical: 2,
+                        }}>
+                        <Text style={styles.error}>{errors.BillType}</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+
+                <View style={styles.box}>
+                  <Text Bold style={{fontSize:13}}>Mileage (Kms)</Text>
+                  <View style={{width: '60%'}}>
+                    <TextInput
+                      style={{
+                        height: 35,
+                        borderBottomWidth: 0.5,
+                        borderColor: GlobalColor.LightDark,
+                        textAlign: 'left',
+                      }}
+                      keyboardType={'numeric'}
+                      onChangeText={handleChange('BillKMR')}
+                      onBlur={handleBlur('BillKMR')}
+                      value={values.BillKMR}
+                      placeholder="Kms"
+                      style={{fontSize:13}}
+                    />
+                    {errors.BillKMR && touched.BillKMR && (
+                      <View
+                        style={{
+                          paddingVertical: 2,
+                        }}>
+                        <Text style={styles.error}>{errors.BillKMR}</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+
+                <View style={[styles.box, {borderBottomWidth: 0}]}>
+                  <Text Bold style={{fontSize:13}}>Amount</Text>
+                  <View style={{width: '60%'}}>
+                    <TextInput
+                      style={{
+                        height: 35,
+                        borderBottomWidth: 0.5,
+                        borderColor: GlobalColor.LightDark,
+                        textAlign: 'left',
+                      }}
+                      keyboardType={'numeric'}
+                      onChangeText={handleChange('BillAmount')}
+                      onBlur={handleBlur('BillAmount')}
+                      value={values.BillAmount}
+                      placeholder="Rs."
+                      style={{fontSize:13}}
+                    />
+                    {errors.BillAmount && touched.BillAmount && (
+                      <View
+                        style={{
+                          paddingVertical: 2,
+                        }}>
+                        <Text style={styles.error}>{errors.BillAmount}</Text>
+                      </View>
+                    )}
+                  </View>
+                </View>
+              </View>
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+  <Text style={{
+    fontSize: 13,
+    color: '#52CB9B',
+    fontWeight: '700', // moderately bold
+    textAlign: 'center'
+  }}>
+    Claim submission receipts/proofs shall be produced by individuals upon being asked by the authorities
+  </Text>
+</View>
+              <View style={{}}>
+                <Button
+                  onPress={() => {
+                    // SubmitConveyance();
+                    handleSubmit();
+                  }}
+                  style={{fontSize:13}}
+                  title="SUBMIT"></Button>
+                <Text style={{textAlign: 'center'}}>Report</Text>
+              </View>
+            </View>
+          )}
+        </Formik>
+
+        <View style={{paddingHorizontal: 10,}}>
+          <View style={styles.reportHeader}>
+            <Text Bold style={styles.textline}>
+              Bill No
+            </Text>
+            <Text Bold style={styles.textline}>
+              Bill Date
+            </Text>
+            <Text Bold style={styles.textline}>
+              Amount (Rs.)
+            </Text>
+          </View>
+
+          {Bill.length > 0 &&
+            Bill.map(item => {
+              return (
+                <View style={styles.reportHeaderBody}>
+                  <Text style={styles.textline}>
+                    {item.BILL_NO ? Decrypt(item.BILL_NO) : '-'}
+                  </Text>
+                  <Text style={styles.textline}>
+                    {item.BILL_DATE ? Decrypt(item.BILL_DATE) : '-'}
+                  </Text>
+                  <Text style={styles.textline}>
+                    {item.BILL_AMT ? Decrypt(item.BILL_AMT) : '-'}
+                  </Text>
+                </View>
+              );
+            })}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
+    backgroundColor: GlobalColor.PrimaryLight,
+    marginBottom:"13%"
+  },
+  box: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderBottomWidth: 0.5,
+    borderColor: '#43C6DB',
+  },
+  spinnerTextStyle: {
+    color: '#FFF',
+  },
+  reportHeader: {
+    width: '100%',
+    marginVertical: 7,
+    backgroundColor: GlobalColor.White,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 0.5,
+    borderColor: GlobalColor.LightDark,
+  },
+
+  reportHeaderBody: {
+    width: '100%',
+    backgroundColor: GlobalColor.White,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderWidth: 0.5,
+    borderColor: GlobalColor.LightDark,
+    marginTop: 10,
+   
+  },
+  textline: {
+    width: '33%',
+    fontSize:13
+  },
+  reportData: {},
+  dropdown2BtnStyle: {
+    // width: "50%",
+    height: 40,
+    backgroundColor: '#FFF',
+    marginLeft: 10,
+  },
+  dropdown2BtnTxtStyle: {textAlign: 'left', fontSize: 13},
+  dropdown2DropdownStyle: {
+    backgroundColor: GlobalColor.White,
+    color: '#43C6DB',
+  },
+  dropdown2RowStyle: {
+    backgroundColor: GlobalColor.White,
+    borderBottomColor: '#C5C5C5',
+  },
+  dropdown2RowTxtStyle: {textAlign: 'left', fontSize: 16},
+  error: {
+    color: GlobalColor.Danger,
+    fontSize: GlobalFontSize.Error,
+  },
+});
+export default ConveyanceBillsSubmission;

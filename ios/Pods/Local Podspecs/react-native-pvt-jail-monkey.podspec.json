@@ -1,0 +1,23 @@
+{
+  "name": "react-native-pvt-jail-monkey",
+  "version": "2.4.7",
+  "summary": "A React Native module for identifying jail-broken, rooted, or mock locations on iOS and Android",
+  "description": "A React Native module for identifying jail-broken, rooted, or mock locations on iOS and Android",
+  "homepage": "https://github.com/GantMan/jail-monkey#readme",
+  "license": "MIT",
+  "authors": {
+    "name": "Gant Laborde"
+  },
+  "source": {
+    "git": "https://github.com/privaterepo2021/react-native-pvt-qrcode-svg.git"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source_files": "JailMonkey/*.{h,m}",
+  "dependencies": {
+    "React-Core": [
+
+    ]
+  }
+}

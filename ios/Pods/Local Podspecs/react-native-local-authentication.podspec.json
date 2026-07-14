@@ -1,0 +1,22 @@
+{
+  "name": "react-native-local-authentication",
+  "version": "1.2.5",
+  "summary": "The library helps you to authenticate users biometrically",
+  "description": "The library helps you to authenticate users biometrically",
+  "license": "MIT",
+  "authors": "Bebnev Anton <bambr.ab@gmail.com>",
+  "homepage": "https://github.com/bebnev/react-native-local-authentication#readme",
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source": {
+    "git": "git+https://github.com/bebnev/react-native-local-authentication.git",
+    "tag": "v1.2.5"
+  },
+  "source_files": "ios/**/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ActivityIndicator,
+  SafeAreaView,
+  Button
+} from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SignIn from '../Auth/SignIn';
+import OnboardingScreen from '../Auth/Onboarding';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
+
+const Stack = createNativeStackNavigator();
+
+const AuthNavigator = () => {
+  const [isFirstLaunch, setIsFirstLaunch] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+
+
+  useEffect(() => {
+    getStorageData()
+    return () => {      
+    }
+  }, [])
+
+
+  const getStorageData = async()=>{
+    await EncryptedStorage.getItem('isnotfirstTime').then((data)=>{
+      if(data != null){
+// $&
+        setIsFirstLaunch(true);
+      }      
+    }).finally(() => {
+      setLoading(false);
+      })
+  }
+
+  if (loading) {
+    return null
+  }
+  
+const FirstRun = ()=>{
+    return (
+      <Stack.Navigator initialRouteName='OnboardingScreen' screenOptions={{headerShown:false}}>
+        <Stack.Screen name='SignIn' component={SignIn}/>
+
+        {!loading && !isFirstLaunch && (
+          <Stack.Screen name='OnboardingScreen' component={OnboardingScreen}/>
+        )}        
+      </Stack.Navigator>
+    );
+  }
+
+  const SecondRun =()=>{
+    return (
+      <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Screen name='SignIn' component={SignIn}/>
+        <Stack.Screen name='OnboardingScreen' component={OnboardingScreen}/>
+      </Stack.Navigator>
+    );
+  }
+
+  return(
+    <View style={{ flex:1 }}>
+      <FirstRun/>
+       {/* {loading && !isFirstLaunch ? <FirstRun/> :<SecondRun/> } */}
+    </View>   
+  )
+
+
+
+}
+
+export default AuthNavigator;
+
+
+// const Login = () =>{
+//   const dispatch = useDispatch();
+//     return(
+//         <View>
+//           <TouchableOpacity onPress={()=>{
+//             dispatch(loginAction("lol"))
+//           }}>
+//             <Text>Login</Text>
+//           </TouchableOpacity>            
+//         </View>
+//     )
+// }

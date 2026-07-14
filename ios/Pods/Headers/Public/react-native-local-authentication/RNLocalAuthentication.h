@@ -1,0 +1,1 @@
+../../../../../node_modules/rn-local-authentication/ios/RNLocalAuthentication/RNLocalAuthentication.h

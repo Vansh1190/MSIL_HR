@@ -1,0 +1,246 @@
+
+App Thinning Size Report for All Variants of MarutiSuzukiApp
+
+Variant: MarutiSuzukiApp-019B3DDD-1A53-4444-A7D8-31701ACAE747.ipa
+Supported variant descriptors: [device: iPhone8,2, os-version: 14.0] and [device: iPhone8,2, os-version: 13.0]
+App + On Demand Resources size: 9.2 MB compressed, 21.3 MB uncompressed
+App size: 9.2 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-04071CEA-0D07-4BCF-9902-14138FC29C8B.ipa
+Supported variant descriptors: [device: iPad7,4, os-version: 14.0], [device: iPad8,12, os-version: 14.0], [device: iPad8,4, os-version: 13.0], [device: iPad13,11, os-version: 14.0], [device: iPad8,1, os-version: 13.0], [device: iPad8,5, os-version: 13.0], [device: iPad13,2, os-version: 14.0], [device: iPad8,9, os-version: 14.0], [device: iPad8,10, os-version: 13.0], [device: iPad8,11, os-version: 13.0], [device: iPad8,3, os-version: 13.0], [device: iPad11,2, os-version: 14.0], [device: iPad6,3, os-version: 13.0], [device: iPad7,1, os-version: 13.0], [device: iPad8,8, os-version: 13.0], [device: iPad11,3, os-version: 14.0], [device: iPad13,7, os-version: 14.0], [device: iPad8,2, os-version: 13.0], [device: iPad8,7, os-version: 13.0], [device: iPad7,3, os-version: 13.0], [device: iPad7,2, os-version: 14.0], [device: iPad7,4, os-version: 13.0], [device: iPad7,2, os-version: 13.0], [device: iPad8,12, os-version: 13.0], [device: iPad6,4, os-version: 13.0], [device: iPad11,2, os-version: 13.0], [device: iPad8,6, os-version: 14.0], [device: iPad8,1, os-version: 14.0], [device: iPad11,4, os-version: 13.0], [device: iPad11,4, os-version: 14.0], [device: iPad13,8, os-version: 14.0], [device: iPad13,6, os-version: 14.0], [device: iPad11,1, os-version: 13.0], [device: iPad8,8, os-version: 14.0], [device: iPad8,5, os-version: 14.0], [device: iPad8,7, os-version: 14.0], [device: iPad13,9, os-version: 14.0], [device: iPad8,6, os-version: 13.0], [device: iPad11,3, os-version: 13.0], [device: iPad7,1, os-version: 14.0], [device: iPad13,5, os-version: 14.0], [device: MacFamily20,1, os-version: 14.0], [device: iPad13,10, os-version: 14.0], [device: iPad7,3, os-version: 14.0], [device: iPad13,1, os-version: 14.0], [device: iPad8,11, os-version: 14.0], [device: iPad8,4, os-version: 14.0], [device: iPad6,4, os-version: 14.0], [device: iPad8,3, os-version: 14.0], [device: iPad13,4, os-version: 14.0], [device: iPad8,10, os-version: 14.0], [device: iPad8,2, os-version: 14.0], [device: iPad11,1, os-version: 14.0], [device: iPad8,9, os-version: 13.0], and [device: iPad6,3, os-version: 14.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-05F35382-3194-4C22-9BC9-81BEE20A2289.ipa
+Supported variant descriptors: [device: iPhone8,2, os-version: 11.0] and [device: iPhone7,1, os-version: 11.0]
+App + On Demand Resources size: 12.2 MB compressed, 31.9 MB uncompressed
+App size: 12.2 MB compressed, 31.9 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-075D8209-462D-4EB2-9BE7-A6B97B0E63C4.ipa
+Supported variant descriptors: [device: iPad8,1, os-version: 12.2], [device: iPad8,6, os-version: 12.2], [device: iPad8,7, os-version: 12.2], [device: iPad7,3, os-version: 12.2], [device: iPad8,2, os-version: 12.2], [device: iPad7,1, os-version: 12.2], [device: iPad8,5, os-version: 12.2], [device: iPad6,4, os-version: 12.2], [device: iPad11,4, os-version: 12.2], [device: iPad11,3, os-version: 12.2], [device: iPad8,8, os-version: 12.2], [device: iPad7,2, os-version: 12.2], [device: iPad6,3, os-version: 12.2], [device: iPad11,2, os-version: 12.2], [device: iPad7,4, os-version: 12.2], [device: iPad8,3, os-version: 12.2], [device: iPad11,1, os-version: 12.2], and [device: iPad8,4, os-version: 12.2]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-07BF49E9-EAB6-4115-8FC5-987437B8ED75.ipa
+Supported variant descriptors: [device: iPad8,6, os-version: 12.0], [device: iPad7,3, os-version: 12.0], [device: iPad6,3, os-version: 12.0], [device: iPad7,1, os-version: 12.0], [device: iPad8,5, os-version: 12.0], [device: iPad8,3, os-version: 12.0], [device: iPad8,7, os-version: 12.0], [device: iPad8,8, os-version: 12.0], [device: iPad8,1, os-version: 12.0], [device: iPad8,2, os-version: 12.0], [device: iPad6,4, os-version: 12.0], [device: iPad7,4, os-version: 12.0], [device: iPad8,4, os-version: 12.0], and [device: iPad7,2, os-version: 12.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-1BDB7315-3774-4085-A219-D4079D6F5116.ipa
+Supported variant descriptors: [device: iPod9,1, os-version: 15.0], [device: iPhone8,1, os-version: 15.0], and [device: iPhone8,4, os-version: 15.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-1D64EE55-3B59-4BB5-8C51-E31EF083F9FB.ipa
+Supported variant descriptors: [device: iPhone6,1, os-version: 11.0], [device: iPod7,1, os-version: 11.0], [device: iPhone6,2, os-version: 11.0], [device: iPhone8,4, os-version: 11.0], [device: iPhone7,2, os-version: 11.0], and [device: iPhone8,1, os-version: 11.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-279B7E0C-55D7-4023-88E1-6E2CA9315ECE.ipa
+Supported variant descriptors: [device: iPhone11,8, os-version: 12.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-30FF22F5-8C3F-4CCB-99F9-9CC186A0CE26.ipa
+Supported variant descriptors: [device: iPhone7,1, os-version: 12.0] and [device: iPhone8,2, os-version: 12.0]
+App + On Demand Resources size: 12.2 MB compressed, 31.9 MB uncompressed
+App size: 12.2 MB compressed, 31.9 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-32DAAA81-DBC8-4670-A317-1F6B90A92A1C.ipa
+Supported variant descriptors: [device: iPad8,6, os-version: 15.0], [device: iPad14,2, os-version: 15.0], [device: iPad8,4, os-version: 15.0], [device: iPad13,11, os-version: 15.0], [device: iPad13,6, os-version: 15.0], [device: MacFamily20,1, os-version: 15.0], [device: iPad13,4, os-version: 15.0], [device: iPad13,1, os-version: 15.0], [device: iPad6,3, os-version: 15.0], [device: iPad7,1, os-version: 15.0], [device: iPad11,2, os-version: 15.0], [device: iPad14,1, os-version: 15.0], [device: iPad8,1, os-version: 15.0], [device: iPad8,8, os-version: 15.0], [device: iPad6,4, os-version: 15.0], [device: iPad13,8, os-version: 15.0], [device: iPad11,1, os-version: 15.0], [device: iPad7,3, os-version: 15.0], [device: iPad11,4, os-version: 15.0], [device: iPad8,7, os-version: 15.0], [device: iPad13,9, os-version: 15.0], [device: iPad8,5, os-version: 15.0], [device: iPad8,12, os-version: 15.0], [device: iPad7,4, os-version: 15.0], [device: iPad13,5, os-version: 15.0], [device: iPad13,2, os-version: 15.0], [device: iPad8,2, os-version: 15.0], [device: iPad8,11, os-version: 15.0], [device: iPad13,7, os-version: 15.0], [device: iPad11,3, os-version: 15.0], [device: iPad7,2, os-version: 15.0], [device: iPad8,10, os-version: 15.0], [device: iPad13,10, os-version: 15.0], [device: iPad8,3, os-version: 15.0], and [device: iPad8,9, os-version: 15.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-32E9B66B-81E0-4653-AE50-25B8707D14AF.ipa
+Supported variant descriptors: [device: iPad7,12, os-version: 14.0], [device: iPad6,12, os-version: 13.0], [device: iPad5,2, os-version: 14.0], [device: iPad6,11, os-version: 14.0], [device: iPad5,3, os-version: 14.0], [device: iPad7,5, os-version: 14.0], [device: iPad7,6, os-version: 14.0], [device: iPad7,11, os-version: 14.0], [device: iPad5,1, os-version: 14.0], [device: iPad11,7, os-version: 14.0], [device: iPad7,6, os-version: 13.0], [device: iPad5,2, os-version: 13.0], [device: iPad7,12, os-version: 13.0], [device: iPad7,5, os-version: 13.0], [device: iPad6,8, os-version: 13.0], [device: iPad5,4, os-version: 14.0], [device: iPad6,7, os-version: 14.0], [device: iPad5,3, os-version: 13.0], [device: iPad7,11, os-version: 13.0], [device: iPad5,4, os-version: 13.0], [device: iPad6,8, os-version: 14.0], [device: iPad11,6, os-version: 14.0], [device: iPad6,11, os-version: 13.0], [device: iPad6,12, os-version: 14.0], [device: iPad5,1, os-version: 13.0], and [device: iPad6,7, os-version: 13.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-53D984BD-9814-4AD3-A2E0-4C72749C4FE5.ipa
+Supported variant descriptors: [device: iPhone8,1, os-version: 12.2], [device: iPhone7,2, os-version: 12.2], [device: iPhone6,1, os-version: 12.2], [device: iPhone6,2, os-version: 12.2], [device: iPhone8,4, os-version: 12.2], [device: iPod7,1, os-version: 12.2], and [device: iPod9,1, os-version: 12.2]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-55A93BBE-4556-4ADD-A33C-5B354A6C13B7.ipa
+Supported variant descriptors: [device: iPhone11,2, os-version: 13.0], [device: iPhone13,3, os-version: 14.0], [device: iPhone12,5, os-version: 14.0], [device: iPhone11,4, os-version: 14.0], [device: iPhone12,5, os-version: 13.0], [device: iPhone10,2, os-version: 14.0], [device: iPhone10,3, os-version: 14.0], [device: iPhone10,3, os-version: 13.0], [device: iPhone10,6, os-version: 13.0], [device: iPhone10,5, os-version: 14.0], [device: iPhone13,4, os-version: 14.0], [device: iPhone13,1, os-version: 14.0], [device: iPhone10,5, os-version: 13.0], [device: iPhone12,3, os-version: 14.0], [device: iPhone10,6, os-version: 14.0], [device: iPhone10,2, os-version: 13.0], [device: iPhone13,2, os-version: 14.0], [device: iPhone9,2, os-version: 14.0], [device: iPhone11,2, os-version: 14.0], [device: iPhone11,4, os-version: 13.0], [device: iPhone9,4, os-version: 13.0], [device: iPhone9,4, os-version: 14.0], [device: iPhone11,6, os-version: 14.0], [device: iPhone12,3, os-version: 13.0], [device: iPhone9,2, os-version: 13.0], and [device: iPhone11,6, os-version: 13.0]
+App + On Demand Resources size: 9.2 MB compressed, 21.3 MB uncompressed
+App size: 9.2 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-566E0DCE-3120-4351-BAD1-B1C966747886.ipa
+Supported variant descriptors: [device: iPhone14,4, os-version: 15.0], [device: iPhone13,3, os-version: 15.0], [device: iPhone12,5, os-version: 15.0], [device: iPhone12,3, os-version: 15.0], [device: iPhone11,2, os-version: 15.0], [device: iPhone11,6, os-version: 15.0], [device: iPhone13,2, os-version: 15.0], [device: iPhone14,2, os-version: 15.0], [device: iPhone10,3, os-version: 15.0], [device: iPhone10,6, os-version: 15.0], [device: iPhone13,4, os-version: 15.0], [device: iPhone14,5, os-version: 15.0], [device: iPhone11,4, os-version: 15.0], [device: iPhone13,1, os-version: 15.0], [device: iPhone9,2, os-version: 15.0], [device: iPhone9,4, os-version: 15.0], [device: iPhone10,2, os-version: 15.0], [device: iPhone10,5, os-version: 15.0], and [device: iPhone14,3, os-version: 15.0]
+App + On Demand Resources size: 9.2 MB compressed, 21.3 MB uncompressed
+App size: 9.2 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-617B27AA-E333-4546-8D5C-285C31077D45.ipa
+Supported variant descriptors: [device: iPhone10,1, os-version: 12.2], [device: iPhone9,1, os-version: 12.2], [device: iPhone9,3, os-version: 12.2], and [device: iPhone10,4, os-version: 12.2]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-6AB22921-65F1-43E7-B2A4-7715B1BA2DDC.ipa
+Supported variant descriptors: [device: iPhone11,8, os-version: 15.0] and [device: iPhone12,1, os-version: 15.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-6FBA3470-C596-4572-BF18-88F59EA5FE71.ipa
+Supported variant descriptors: [device: iPhone10,4, os-version: 11.0], [device: iPhone9,3, os-version: 11.0], [device: iPhone9,1, os-version: 11.0], and [device: iPhone10,1, os-version: 11.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-730290D2-5EB4-4B3C-BA60-6ABF4ADB759F.ipa
+Supported variant descriptors: [device: iPhone8,2, os-version: 12.2] and [device: iPhone7,1, os-version: 12.2]
+App + On Demand Resources size: 9.2 MB compressed, 21.3 MB uncompressed
+App size: 9.2 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-737838BC-C318-4592-AD73-8623B320CCC3.ipa
+Supported variant descriptors: [device: iPad4,2, os-version: 12.0], [device: iPad4,9, os-version: 12.0], [device: iPad6,12, os-version: 12.0], [device: iPad6,8, os-version: 12.0], [device: iPad5,3, os-version: 12.0], [device: iPad4,7, os-version: 12.0], [device: iPad4,4, os-version: 12.0], [device: iPad6,11, os-version: 12.0], [device: iPad7,6, os-version: 12.0], [device: iPad4,3, os-version: 12.0], [device: iPad4,5, os-version: 12.0], [device: iPad4,6, os-version: 12.0], [device: iPad4,1, os-version: 12.0], [device: iPad4,8, os-version: 12.0], [device: iPad5,2, os-version: 12.0], [device: iPad6,7, os-version: 12.0], [device: iPad5,4, os-version: 12.0], [device: iPad5,1, os-version: 12.0], and [device: iPad7,5, os-version: 12.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-75F72A52-53AF-40AD-A0C5-B76152BBD71F.ipa
+Supported variant descriptors: [device: iPad5,1, os-version: 12.2], [device: iPad6,8, os-version: 12.2], [device: iPad4,1, os-version: 12.2], [device: iPad6,11, os-version: 12.2], [device: iPad4,7, os-version: 12.2], [device: iPad4,3, os-version: 12.2], [device: iPad4,2, os-version: 12.2], [device: iPad4,4, os-version: 12.2], [device: iPad4,5, os-version: 12.2], [device: iPad4,6, os-version: 12.2], [device: iPad4,8, os-version: 12.2], [device: iPad4,9, os-version: 12.2], [device: iPad5,3, os-version: 12.2], [device: iPad6,12, os-version: 12.2], [device: iPad6,7, os-version: 12.2], [device: iPad7,5, os-version: 12.2], [device: iPad5,2, os-version: 12.2], [device: iPad5,4, os-version: 12.2], and [device: iPad7,6, os-version: 12.2]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-7B5E791C-4141-4FF6-8EE3-494EFE0C94B0.ipa
+Supported variant descriptors: [device: iPad12,2, os-version: 15.0], [device: iPad11,6, os-version: 15.0], [device: iPad7,5, os-version: 15.0], [device: iPad5,2, os-version: 15.0], [device: iPad7,12, os-version: 15.0], [device: iPad11,7, os-version: 15.0], [device: iPad6,11, os-version: 15.0], [device: iPad5,3, os-version: 15.0], [device: iPad6,12, os-version: 15.0], [device: iPad7,11, os-version: 15.0], [device: iPad7,6, os-version: 15.0], [device: iPad5,1, os-version: 15.0], [device: iPad6,7, os-version: 15.0], [device: iPad6,8, os-version: 15.0], [device: iPad5,4, os-version: 15.0], and [device: iPad12,1, os-version: 15.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-7C83CE54-ACC2-44D1-8BCC-ECA779382546.ipa
+Supported variant descriptors: [device: iPhone12,1, os-version: 14.0], [device: iPhone12,1, os-version: 13.0], [device: iPhone11,8, os-version: 13.0], and [device: iPhone11,8, os-version: 14.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-8E2D5C92-39F9-44D9-BA6C-3445B4AE9C61.ipa
+Supported variant descriptors: [device: iPhone8,4, os-version: 14.0], [device: iPhone8,4, os-version: 13.0], [device: iPod9,1, os-version: 14.0], [device: iPhone8,1, os-version: 14.0], [device: iPhone8,1, os-version: 13.0], and [device: iPod9,1, os-version: 13.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-958E81B6-312E-4459-A20C-D4DBEDFEB942.ipa
+Supported variant descriptors: [device: iPhone9,3, os-version: 15.0], [device: iPhone10,4, os-version: 15.0], [device: iPhone12,8, os-version: 15.0], [device: iPhone10,1, os-version: 15.0], and [device: iPhone9,1, os-version: 15.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-AE48F150-FBB7-4DD7-9D63-55BB7FF16750.ipa
+Supported variant descriptors: [device: iPhone11,4, os-version: 12.0], [device: iPhone9,4, os-version: 12.0], [device: iPhone11,2, os-version: 12.0], [device: iPhone10,6, os-version: 12.0], [device: iPhone10,3, os-version: 12.0], [device: iPhone11,6, os-version: 12.0], [device: iPhone10,5, os-version: 12.0], [device: iPhone9,2, os-version: 12.0], and [device: iPhone10,2, os-version: 12.0]
+App + On Demand Resources size: 12.2 MB compressed, 31.9 MB uncompressed
+App size: 12.2 MB compressed, 31.9 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-B0A10B88-F302-49D4-8BEA-CD37218CFB69.ipa
+Supported variant descriptors: [device: iPhone8,4, os-version: 12.0], [device: iPhone6,1, os-version: 12.0], [device: iPhone6,2, os-version: 12.0], [device: iPod7,1, os-version: 12.0], [device: iPhone7,2, os-version: 12.0], and [device: iPhone8,1, os-version: 12.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-B183F6D2-138C-496F-8048-F765685405B8.ipa
+Supported variant descriptors: [device: iPhone8,2, os-version: 15.0]
+App + On Demand Resources size: 9.2 MB compressed, 21.3 MB uncompressed
+App size: 9.2 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-BFDD267A-841F-4F65-BFE4-9BDC0EF9BA22.ipa
+Supported variant descriptors: [device: iPhone9,1, os-version: 14.0], [device: iPhone10,1, os-version: 14.0], [device: iPhone12,8, os-version: 14.0], [device: iPhone9,3, os-version: 13.0], [device: iPhone9,3, os-version: 14.0], [device: iPhone10,1, os-version: 13.0], [device: iPhone10,4, os-version: 14.0], [device: iPhone9,1, os-version: 13.0], [device: iPhone10,4, os-version: 13.0], and [device: iPhone12,8, os-version: 13.0]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-DDC7F06B-899E-4C2B-829A-E5315C73D8D3.ipa
+Supported variant descriptors: [device: iPhone9,1, os-version: 12.0], [device: iPhone10,4, os-version: 12.0], [device: iPhone9,3, os-version: 12.0], and [device: iPhone10,1, os-version: 12.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-EE50CA92-B73D-48EA-A653-E266A5B89D30.ipa
+Supported variant descriptors: [device: iPad6,3, os-version: 11.0], [device: iPad6,4, os-version: 11.0], [device: iPad7,4, os-version: 11.0], [device: iPad7,3, os-version: 11.0], [device: iPad7,1, os-version: 11.0], and [device: iPad7,2, os-version: 11.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-F2A11968-310D-425A-8C70-65DBD2F80767.ipa
+Supported variant descriptors: [device: iPhone10,5, os-version: 11.0], [device: iPhone10,2, os-version: 11.0], [device: iPhone10,6, os-version: 11.0], [device: iPhone9,2, os-version: 11.0], [device: iPhone9,4, os-version: 11.0], and [device: iPhone10,3, os-version: 11.0]
+App + On Demand Resources size: 12.2 MB compressed, 31.9 MB uncompressed
+App size: 12.2 MB compressed, 31.9 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-F3579FA1-CE92-41F2-9481-7C2C21895FC5.ipa
+Supported variant descriptors: [device: iPhone11,8, os-version: 12.2]
+App + On Demand Resources size: 9.1 MB compressed, 21.3 MB uncompressed
+App size: 9.1 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-FA905983-3B0C-4075-BAD9-18B912A3DDF3.ipa
+Supported variant descriptors: [device: iPad4,2, os-version: 11.0], [device: iPad4,3, os-version: 11.0], [device: iPad7,5, os-version: 11.0], [device: iPad4,7, os-version: 11.0], [device: iPad5,3, os-version: 11.0], [device: iPad5,4, os-version: 11.0], [device: iPad6,8, os-version: 11.0], [device: iPad5,1, os-version: 11.0], [device: iPad4,6, os-version: 11.0], [device: iPad5,2, os-version: 11.0], [device: iPad6,11, os-version: 11.0], [device: iPad6,12, os-version: 11.0], [device: iPad7,6, os-version: 11.0], [device: iPad6,7, os-version: 11.0], [device: iPad4,1, os-version: 11.0], [device: iPad4,4, os-version: 11.0], [device: iPad4,5, os-version: 11.0], [device: iPad4,8, os-version: 11.0], and [device: iPad4,9, os-version: 11.0]
+App + On Demand Resources size: 12.1 MB compressed, 31.8 MB uncompressed
+App size: 12.1 MB compressed, 31.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp-FBCB4B76-FC4C-4C45-B843-8CC45990D703.ipa
+Supported variant descriptors: [device: iPhone10,3, os-version: 12.2], [device: iPhone10,6, os-version: 12.2], [device: iPhone10,5, os-version: 12.2], [device: iPhone11,4, os-version: 12.2], [device: iPhone9,2, os-version: 12.2], [device: iPhone10,2, os-version: 12.2], [device: iPhone11,2, os-version: 12.2], [device: iPhone11,6, os-version: 12.2], and [device: iPhone9,4, os-version: 12.2]
+App + On Demand Resources size: 9.2 MB compressed, 21.3 MB uncompressed
+App size: 9.2 MB compressed, 21.3 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed
+
+
+Variant: MarutiSuzukiApp.ipa
+Supported variant descriptors: Universal
+App + On Demand Resources size: 19.2 MB compressed, 51.8 MB uncompressed
+App size: 19.2 MB compressed, 51.8 MB uncompressed
+On Demand Resources size: Zero KB compressed, Zero KB uncompressed

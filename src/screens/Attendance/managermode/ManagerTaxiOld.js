@@ -1,0 +1,535 @@
+import React, { Component, useState, useEffect, useContext } from 'react';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+  Image,
+  FlatList,
+  SafeAreaView,
+  Modal,
+  Alert
+} from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import Feather from 'react-native-vector-icons/Feather';
+import LinearGradient from 'react-native-linear-gradient';
+import SegmentedControlTab from 'react-native-segmented-control-tab';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import * as ApiService from '../../../Utils/Utils';
+import Toast from 'react-native-simple-toast'
+import { useFocusEffect } from '@react-navigation/native';
+import AuthContext from '../../../context/AuthContext';
+import moment from 'moment';
+import Spinner from 'react-native-loading-spinner-overlay';
+import { GlobalColor } from '../../../constants/Colors';
+import Text from '../../../components/reusable/Text';
+import { Header } from '../../../components/reusable/Header';
+import { GlobalFontSize } from '../../../constants/FontSize';
+import ListEmptyComponent from '../../../components/reusable/ListEmptyComponent';
+import TextInput from '../../../components/reusable/TextInput';
+import { LoadingScreen } from '../../../components/reusable/LoadingScreen';
+import { HeaderMgr } from '../../../components/reusable/HeaderMgr';
+
+
+export const ManagerTaxiOld = ({navigation}) => {
+    const [flexiShift, setFlexiShift] = useState('')
+    const { authContext, AppUserData } = useContext(AuthContext);
+    const [loader, setLoader] = useState(false);
+    const [refresh, setrefresh] = useState(false);
+    const [taxiPending, setTaxiPending] = useState([]);
+    const [taxiPendingFiltered, setTaxiPendingFiltered] = useState([]);
+    const [approvedTaxiReport, setApprovedTaxiReport] = useState([]);
+    const [search, setSearch] = useState('');
+    const [employ, setEmploy] = useState([]);
+    const [approve, setApprove] = useState(0);
+
+
+    const stopLoader = () => {
+        setLoader(false);
+        setrefresh(false);
+    }  
+
+    const GetTaxiPendingList = () => {
+
+        const stopLoader = () => {
+          setLoader(false);
+          // setrefresh(false);
+        }
+    
+        let userId = AppUserData?.data?.userId
+        let token = AppUserData.token;
+// $&
+
+        let apiData = {
+          // "UserName": "spnayak",
+          "StaffNo": userId,
+    
+        };
+        setLoader(true);
+        ApiService.PostMethode('/GetTaxiPendingList', apiData, token, authContext)
+          .then(result => {
+// $&
+            stopLoader();
+            if(result.Value && result.Value.length > 0){
+              ApiResult = result.Value
+              setTaxiPending(ApiResult);
+              setTaxiPendingFiltered(ApiResult);              
+            }else{
+              setTaxiPending([]);
+              setTaxiPendingFiltered([]);              
+              Toast.show("No pending request found");
+            }
+          })
+          .catch(error => {
+            stopLoader();
+            // // console.log($1);
+            ApiService.showErrorMessage(error, authContext);
+          });
+      }
+    
+      const ApprovedTaxiReport = () => {
+        const stopLoader = () => {
+          setLoader(false);
+          // setrefresh(false);
+        }
+        let userId = AppUserData?.data?.userId
+        let token = AppUserData.token;
+        let apiData = {
+          "UserName": AppUserData?.data?.username//"NSTHAKUR"
+        };
+        setLoader(true);
+        ApiService.PostMethode('/ApprovedTaxiReport', apiData, token, authContext)
+          .then(result => {
+// $&
+            stopLoader();
+            if(result.Value && result.Value.length > 0){
+                ApiResult = result.Value
+                setApprovedTaxiReport(ApiResult);
+            }else{
+                setApprovedTaxiReport([]);
+            }
+          })
+          .catch(error => {
+            stopLoader();
+            // // console.log($1);
+            ApiService.showErrorMessage(error, authContext);
+          });
+      }
+    
+    
+      const SearchEmployee = () => {
+        const stopLoader = () => {
+          setLoader(false);
+          setrefresh(false);
+        }
+    
+        if (search === '') {
+          Alert.alert("please enter a valid keyWord ")
+          return
+        } else {
+          let apiData = {
+            Search: search
+          }
+          let token = AppUserData.token
+          setLoader(true);
+          ApiService.PostMethode('/GetEmplLookup', apiData, token, authContext)
+            .then(result => {
+// $&
+              stopLoader();
+              if(result.Value && result.Value.length > 0 ){
+                let responseData = result.Value;
+                setEmploy(responseData);
+              }else{
+                Toast.show('Try with diffrent keyword');
+              }
+            })
+            .catch(error => {
+              stopLoader();
+              // // console.log($1);
+              ApiService.showErrorMessage(error, authContext);
+            });
+        }
+      };
+
+
+      const searchFilterFunction = (text) => {
+        setSearch(text)
+        // // console.log($1);
+        const newData = taxiPending.filter((item) => {
+          // ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}
+          const itemData = `${item.TCAR_EMPL_ID}`;
+          const itemDataSlip = `${item.TCAR_SLIP_NO}`;
+          const textData = text;
+          if(itemData.indexOf(text) > -1){
+// $&
+            return item;
+          }else if(itemDataSlip.indexOf(text) > -1){
+// $&
+            return item;
+          }
+        });
+        setTaxiPendingFiltered(newData);
+      };
+    
+
+
+      
+      const handleApprove = index => {
+        setApprove(index);
+      };
+      
+      const emptyList = () => {
+        setSearch('');
+        setTaxiPendingFiltered(taxiPending);
+      }
+
+    const rejectFlexiShift = (data) =>{
+        Alert.alert(
+            "Reject",
+            "Are you sure to Reject ?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => rejectFlexiShiftDone(data, "R")}
+            ]
+          );
+    }
+
+    const approveFlexiShift = (data) =>{
+        Alert.alert(
+            "Approve",
+            "Are you sure to Approve ?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+              },
+              { text: "OK", onPress: () => rejectFlexiShiftDone(data, "A")}
+            ]
+          );
+    }
+
+
+
+
+    const initialLoading = () =>{
+        GetTaxiPendingList()
+        ApprovedTaxiReport()
+      }
+
+    useFocusEffect(
+        React.useCallback(() => {
+          const unsubscribe = initialLoading();
+          return () => unsubscribe;
+        }, [])
+    );
+    
+  const ItemRender = ({ item }) => (
+    <View style={styles.item}>
+       <View style={[styles.itemColumn]}>
+         <Text style={styles.itemText}>{moment(item.TCAR_APPROX_TIME_OUT).format("MM/DD/YY")}</Text>
+       </View>
+       <View style={[styles.itemColumn, {flex:0.40}]}>
+         <Text style={styles.itemText}>{item.EMPL_NAME}</Text>
+       </View>
+       <View style={styles.itemColumn}>
+         <Text style={styles.itemText}>{item.TCAR_SLIP_NO}</Text>
+       </View>
+       <View style={styles.itemColumn}>         
+        <Text style={styles.itemText}>{item.EMPL_DEPT_CODE}</Text>        
+       </View>      
+    </View>
+  );
+
+  const ItemRender_Approve = ({ item }) => (
+    <TouchableOpacity style={styles.item}
+      onPress={()=>{
+        navigation.navigate('ManagerTaxiApproval',{data:item.TCAR_SLIP_NO})
+      }}
+    >
+       <View style={[styles.itemColumn,{flex:0.40}]}>
+         <Text style={styles.itemText}>{item.TCAR_APPROX_TIME_OUT}</Text>
+       </View>
+       <View style={[styles.itemColumn]}>
+         <Text style={styles.itemText}>{item.TCAR_SLIP_NO}</Text>
+       </View>
+       <View style={[styles.itemColumn, {flex:0.40}]}>
+         <Text style={styles.itemText}>{item.EMPL_NAME}</Text>
+       </View>
+       <View style={[styles.itemColumn, {flex:0.15}]}>         
+        <Text style={styles.itemText}>{item.DEPT_CODE}</Text>        
+       </View>      
+    </TouchableOpacity>
+  );
+
+
+  const FlatList_Header = () => {
+    return (
+      <View style={{
+        width: "100%",
+        justifyContent: 'space-between',
+        paddingHorizontal:10,
+        paddingVertical:15,
+        backgroundColor:GlobalColor.White,
+        flexDirection:'row'
+      }}>        
+        <Text Bold style={[styles.HeaderColumn]}>Date</Text>
+        <Text Bold style={[styles.HeaderColumn, {flex:0.40}]}>Name</Text>
+        <Text Bold style={styles.HeaderColumn}>Slip No.</Text>
+        <Text Bold style={styles.HeaderColumn}>Dept</Text>
+      </View>
+    );
+  }
+
+
+  const FlatList_Header_Approve = () => {
+    return (
+      <View style={{
+        width: "100%",
+        justifyContent: 'space-between',
+        paddingHorizontal:10,
+        paddingVertical:15,
+        backgroundColor:GlobalColor.White,
+        flexDirection:'row'
+      }}>        
+        <Text Bold style={[styles.HeaderColumn,{flex:0.40}]}>Travel Date </Text>
+        <Text Bold style={[styles.HeaderColumn]}>Slip No.</Text>
+        <Text Bold style={[styles.HeaderColumn, {flex:0.40}]}>Emp. Name</Text>
+        <Text Bold style={[styles.HeaderColumn, {flex:0.15}]}>Dept.</Text>
+      </View>
+    );
+  }
+
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: GlobalColor.PrimaryLight }}>  
+            {loader == true ? (
+              <Spinner
+                visible={loader}
+                textContent={'Loading...'}
+                textStyle={styles.spinnerTextStyle}
+              />
+            ) : null}
+
+    <HeaderMgr title ="Taxi Approval"/>
+
+    <View style={{ width: '100%', marginVertical: 0 }}>
+        <SegmentedControlTab
+          borderRadius={0}
+          values={['Approve Taxi', 'View Report']}
+          selectedIndex={approve}
+          onTabPress={index => {
+            handleApprove(index);
+          }}
+          tabsContainerStyle={styles.tabsContainerStyle}
+          tabStyle={styles.tabStyle}
+          tabTextStyle={styles.tabTextStyle}
+          activeTabStyle={styles.activeTabStyle}
+          activeTabTextStyle={styles.activeTabTextStyle}
+        />
+      </View>
+
+
+      <View style={{ flex: 1 }}>
+        {approve == 0 ? (
+          <View style={{flex: 1, width: '100%', marginVertical: 0,paddingHorizontal:10}}>
+            <View
+              style={styles.SearchInput}>
+              <View
+                style={{
+                  width: '15%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Feather name="search" size={17} color={'#FF6347'} />
+              </View>
+              <TextInput
+                placeholder="Search By Slip No/Staff ID"
+                value={search}
+                onChangeText={(data) => {
+                  searchFilterFunction(data);
+                }}
+                style={{
+                  width: '65%',
+                  paddingVertical: 5,
+                  fontSize: 13
+                }}
+              />
+
+              {search !== '' ? (
+                <TouchableOpacity
+                  style={{}} onPress={() => { emptyList() }}>
+                  <Ionicons
+                    style={{ paddingVertical: 10 }}
+                    name="close-circle-outline"
+                    size={25}
+                    color={'#FF6347'}
+                  />
+                </TouchableOpacity>
+              ) : null}
+
+
+              <TouchableOpacity
+                // onPress={() => {
+                //   SearchEmployee()
+                // }}
+                style={{
+                  width: '15%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Ionicons name="send" size={16} color={'#FF6347'} />
+              </TouchableOpacity>
+            </View>
+
+
+            <FlatList 
+              contentContainerStyle={{ flexGrow:1 }}            
+              data={taxiPendingFiltered}
+              style={{marginBottom:'30%'}}
+              ListHeaderComponent={FlatList_Header_Approve}
+              keyExtractor={({ item, index }) => index}
+              ListHeaderComponentStyle={{ borderBottomColor: '#FF6347', borderBottomWidth: 1 }}
+              ListEmptyComponent={() => {
+                return (
+                    <ListEmptyComponent 
+                    title={"No Data Found"}
+                    subtitle={search?"Not found please try with diffrent key":"No data found please pull down to refresh"}
+                    enableRefresh={true} onRefreshCallback={() => ApprovedTaxiReport(true)} refreshing={refresh}
+                    ></ListEmptyComponent>      
+                )
+              }}
+              renderItem={ItemRender_Approve} />
+          </View>
+        ) : (
+          <View style={{ flex: 1 }}>
+            <FlatList
+                contentContainerStyle={{ flexGrow:1, paddingBottom:10 }}
+                data={approvedTaxiReport}
+                renderItem={ItemRender}
+                style={{marginBottom:'30%'}}
+                keyExtractor={item => item.id}
+                ListHeaderComponent={FlatList_Header}
+                ListHeaderComponentStyle={{ borderBottomColor: '#FF6347', borderBottomWidth: 1 }}
+                ListEmptyComponent={<ListEmptyComponent 
+                    title="No Data Found"
+                    enableRefresh={true} onRefreshCallback={() => ApprovedTaxiReport(true)} refreshing={refresh}
+                    ></ListEmptyComponent>
+                }
+            />
+          </View>
+        )}
+      </View>
+      </SafeAreaView>
+    );
+};
+
+export default ManagerTaxiOld;
+
+const styles = StyleSheet.create({
+    item:{
+        flexDirection:'row',
+        backgroundColor:GlobalColor.White,
+        paddingHorizontal:10, 
+        marginTop:5,
+        justifyContent:'space-between',
+        paddingVertical:5,
+        borderBottomWidth:0.5,
+        borderBottomColor:GlobalColor.Secondary
+    },
+    HeaderColumn:{
+        flex:0.25,
+        alignItems:'center',
+        textAlign:'center',
+        fontSize:13
+        // justifyContent:'center',
+    },
+    itemColumn:{
+        flex:0.25,
+        justifyContent:'center',
+        alignItems:'center',
+        fontSize:13
+    },
+    itemText:{
+         fontSize:13
+    },
+    itemButton:{
+        width:30,
+        height:30,
+        borderRadius:15,
+        backgroundColor:GlobalColor.PrimaryLight,
+        alignItems:'center',
+        justifyContent:'center',
+    },
+    itemColumnButtons:{
+        flex:0.25,
+        alignItems:'center',
+        justifyContent:'center',
+        paddingHorizontal:10,
+        flexDirection:'row',
+    },
+    spinnerTextStyle: {
+        color: '#fff'
+    },
+    tabsContainerStyle: {
+        paddingHorizontal:10,
+        marginTop: 10,
+        borderRadius: 0,
+        width: '100%',
+      },
+      tabStyle: {
+        paddingVertical: 10,
+        borderWidth: 1,
+        borderRadius: 0,
+        borderColor: '#FF6347'
+      },
+      tabTextStyle: {
+        fontSize: 13,
+        color: 'grey',
+        fontFamily: 'Roboto-Bold',
+      },
+      activeTabStyle: {
+        backgroundColor: GlobalColor.PrimaryLight,
+        borderBottomWidth: 4,
+        borderBottomColor: '#FF6347',
+      },
+      activeTabTextStyle: {
+        color: '#FF6347',
+      },
+      SearchInput: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderWidth: 1,
+        borderColor: '#FF6347',
+        borderRadius: 3,
+        alignSelf: 'center',
+        marginBottom: 5,
+        marginTop:5,
+        height:50,
+        backgroundColor: GlobalColor.White
+      },
+      FlatListData: {
+        width: "100%",    
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 5,
+        paddingHorizontal:5,
+        marginTop: 10,
+        backgroundColor: GlobalColor.White,
+        shadowColor: GlobalColor.Black,
+        shadowOffset: {
+          width: -0,
+          height: 1,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 2.22,
+        elevation: 5,
+        borderRadius: 3,
+      },
+})
+

@@ -1,0 +1,6 @@
+module Pods_MarutiSuzukiApp {
+  umbrella header "Pods-MarutiSuzukiApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

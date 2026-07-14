@@ -1,0 +1,1 @@
+../../../../../node_modules/react-native-screen-capture-secure/ios/ScreenCaptureSecure.h
