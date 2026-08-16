@@ -337,7 +337,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nunset npm_config_prefix\nexport NVM_DIR=\"$HOME/.nvm\"\n[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"\nnvm use 16.20.2\n\nexport NODE_BINARY=$(command -v node)\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			//Added For Jenkins
+			shellScript = "set -e\n\nexport NODE_BINARY=$(command -v node)\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
+			//shellScript = "set -e\n\nunset npm_config_prefix\nexport NVM_DIR=\"$HOME/.nvm\"\n[ -s \"$NVM_DIR/nvm.sh\" ] && \\. \"$NVM_DIR/nvm.sh\"\nnvm use 16.20.2\n\nexport NODE_BINARY=$(command -v node)\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		17A6A1F26CC649CF6A54DF81 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
