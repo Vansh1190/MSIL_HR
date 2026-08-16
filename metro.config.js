@@ -29,6 +29,11 @@ const jsoMetroPlugin = require("obfuscator-io-metro-plugin")(
 
 module.exports = {
   ...jsoMetroPlugin,
+  //added to fix the jenkins broken watchman
+  resolver: {
+    ...(jsoMetroPlugin.resolver || {}),
+    useWatchman: false, // agent's Watchman is broken; use Node crawler instead
+  },
   transformer: {
     ...jsoMetroPlugin.transformer,
     getTransformOptions: async () => ({
