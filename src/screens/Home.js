@@ -23,6 +23,8 @@ import {
   ActivityIndicator,
   Platform,
   PermissionsAndroid,
+  Easing,
+  StatusBar,
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -40,6 +42,12 @@ import IconBadge from 'react-native-icon-badge';
 import AuthContext from './../context/AuthContext';
 
 import {GlobalColor} from '../constants/Colors';
+
+import {
+  HomeTheme as HOME,
+  HOME_VISION,
+  getTimeGreeting,
+} from '../constants/HomeTheme';
 
 import {GlobalFontSize} from '../constants/FontSize';
 
@@ -694,6 +702,399 @@ const ScanBizCardModal = ({
     </Modal>
   );
 };
+
+// ────────────────────────────────────────────────
+// Vision strip — auto-rotating brand statement card
+// (pure UI, mirrors the "Our vision" block of the design)
+// ────────────────────────────────────────────────
+const VisionStrip = ({windowWidth}) => {
+  const [index, setIndex] = useState(0);
+  const fade = useRef(new Animated.Value(1)).current;
+  const rise = useRef(new Animated.Value(0)).current;
+  const fill = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const id = setInterval(
+      () => setIndex(i => (i + 1) % HOME_VISION.length),
+      6000,
+    );
+    return () => clearInterval(id);
+  }, []);
+
+  useEffect(() => {
+    fade.setValue(0);
+    rise.setValue(10);
+    fill.setValue(0);
+    Animated.parallel([
+      Animated.timing(fade, {
+        toValue: 1,
+        duration: 420,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }),
+      Animated.timing(rise, {
+        toValue: 0,
+        duration: 620,
+        easing: Easing.out(Easing.cubic),
+        useNativeDriver: true,
+      }),
+      Animated.timing(fill, {
+        toValue: 1,
+        duration: 6000,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }),
+    ]).start();
+  }, [index]);
+
+  const go = i => {
+    if (i === index) return;
+    setIndex(i);
+  };
+
+  return (
+    <View style={[homeStyles.visionCard, {width: windowWidth - 32}]}>
+      <LinearGradient
+        colors={['#FFFFFF', '#EFF6F3']}
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 1}}
+        style={StyleSheet.absoluteFill}
+      />
+      <View style={homeStyles.visionHead}>
+        <Text style={homeStyles.visionKicker} Bold>
+          OUR VISION
+        </Text>
+        <View style={homeStyles.visionRule} />
+        <Text style={homeStyles.visionCount}>
+          {index + 1} / {HOME_VISION.length}
+        </Text>
+      </View>
+
+      <View style={homeStyles.visionBody}>
+        <Animated.View
+          style={{opacity: fade, transform: [{translateY: rise}]}}>
+          <Text style={homeStyles.visionText} Bold>
+            {HOME_VISION[index]}
+          </Text>
+        </Animated.View>
+      </View>
+
+      <View
+        style={homeStyles.visionDots}
+        accessibilityRole="tablist"
+        accessibilityLabel="Vision statements">
+        {HOME_VISION.map((label, i) => (
+          <TouchableOpacity
+            key={label}
+            onPress={() => go(i)}
+            activeOpacity={0.7}
+            accessibilityRole="tab"
+            accessibilityState={{selected: i === index}}
+            accessibilityLabel={`Vision statement ${i + 1}`}
+            style={homeStyles.visionDotHit}>
+            <View
+              style={[
+                homeStyles.visionTrack,
+                i < index && {backgroundColor: 'rgba(43,131,121,0.35)'},
+              ]}>
+              {i === index ? (
+                <Animated.View
+                  style={[
+                    homeStyles.visionFill,
+                    {
+                      width: fill.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: ['0%', '100%'],
+                      }),
+                    },
+                  ]}
+                />
+              ) : null}
+            </View>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  );
+};
+
+// ────────────────────────────────────────────────
+// Home v2 presentation styles
+// ────────────────────────────────────────────────
+const homeStyles = StyleSheet.create({
+  hero: {
+    paddingHorizontal: 18,
+    paddingTop: 14,
+    paddingBottom: 26,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    overflow: 'hidden',
+  },
+  heroBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  brandPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    minHeight: 44,
+    paddingRight: 10,
+  },
+  brandLabel: {
+    color: HOME.onDark,
+    fontSize: scale(18),
+    letterSpacing: 0.6,
+    marginLeft: 8,
+  },
+  heroBarRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  logoChip: {
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: HOME.onDark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconBtn: {
+    width: 44,
+    height: 44,
+    marginLeft: 8,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255,255,255,0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  identityRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 16,
+  },
+  avatarRing: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 2,
+    borderColor: HOME.amber,
+    padding: 2,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 23,
+    backgroundColor: HOME.tealSoft,
+  },
+  identityText: {
+    flex: 1,
+    minWidth: 0,
+    marginLeft: 12,
+  },
+  greeting: {
+    color: HOME.onDarkSoft,
+    fontSize: scale(13),
+  },
+  userName: {
+    color: HOME.onDark,
+    fontSize: scale(19),
+    marginTop: 1,
+  },
+  userMeta: {
+    color: HOME.onDarkFaint,
+    fontSize: scale(11),
+    marginTop: 3,
+    textTransform: 'uppercase',
+    letterSpacing: 0.4,
+  },
+  pillRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginTop: 14,
+  },
+  glassPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    height: 34,
+    marginRight: 8,
+    marginBottom: 8,
+    paddingHorizontal: 12,
+    borderRadius: 17,
+    backgroundColor: 'rgba(255,255,255,0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.2)',
+  },
+  glassPillText: {
+    color: HOME.onDark,
+    fontSize: scale(12),
+    marginLeft: 6,
+  },
+
+  announceCard: {
+    marginHorizontal: 16,
+    marginTop: -14,
+    borderRadius: 22,
+    overflow: 'hidden',
+    backgroundColor: HOME.card,
+    borderWidth: 1,
+    borderColor: HOME.line,
+    shadowColor: '#0B2A25',
+    shadowOffset: {width: 0, height: 8},
+    shadowOpacity: 0.12,
+    shadowRadius: 16,
+    elevation: 6,
+  },
+  announceBadge: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    zIndex: 2,
+    height: 22,
+    paddingHorizontal: 9,
+    borderRadius: 11,
+    backgroundColor: HOME.amber,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  announceBadgeText: {
+    color: HOME.tealInk,
+    fontSize: scale(10),
+    letterSpacing: 0.8,
+  },
+
+  visionCard: {
+    marginTop: 16,
+    marginLeft: 16,
+    borderRadius: 22,
+    borderWidth: 1,
+    borderColor: HOME.line,
+    backgroundColor: HOME.card,
+    paddingHorizontal: 16,
+    paddingTop: 14,
+    paddingBottom: 12,
+    overflow: 'hidden',
+    shadowColor: '#0B2A25',
+    shadowOffset: {width: 0, height: 6},
+    shadowOpacity: 0.06,
+    shadowRadius: 14,
+    elevation: 3,
+  },
+  visionHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  visionKicker: {
+    color: HOME.teal,
+    fontSize: scale(11),
+    letterSpacing: 1.6,
+  },
+  visionRule: {
+    flex: 1,
+    height: 1,
+    marginLeft: 8,
+    backgroundColor: 'rgba(43,131,121,0.28)',
+  },
+  visionCount: {
+    color: HOME.muted,
+    fontSize: scale(11),
+    marginLeft: 8,
+  },
+  visionBody: {
+    height: 52,
+    justifyContent: 'center',
+    marginTop: 8,
+  },
+  visionText: {
+    color: HOME.tealInk,
+    fontSize: scale(17),
+    lineHeight: scale(23),
+  },
+  visionDots: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: -5,
+    marginTop: 2,
+  },
+  visionDotHit: {
+    width: 30,
+    height: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  visionTrack: {
+    width: 22,
+    height: 3,
+    borderRadius: 2,
+    overflow: 'hidden',
+    backgroundColor: '#D8E4E0',
+  },
+  visionFill: {
+    height: '100%',
+    borderRadius: 2,
+    backgroundColor: HOME.teal,
+  },
+
+  amberBanner: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 16,
+    marginTop: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 18,
+    backgroundColor: HOME.amberSoft,
+    borderWidth: 1,
+    borderColor: '#EFDDB8',
+  },
+  amberIcon: {
+    width: 36,
+    height: 36,
+    marginRight: 12,
+    borderRadius: 11,
+    backgroundColor: HOME.onDark,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  amberBody: {
+    flex: 1,
+    minWidth: 0,
+    marginRight: 12,
+  },
+  amberTitle: {
+    color: HOME.amberInk,
+    fontSize: scale(13),
+  },
+  amberSub: {
+    color: '#9A7638',
+    fontSize: scale(12),
+    marginTop: 2,
+  },
+  whatsnewGif: {
+    width: 74,
+    height: 26,
+    resizeMode: 'contain',
+  },
+
+  sectionHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginHorizontal: 18,
+    marginTop: 22,
+    marginBottom: 2,
+  },
+  sectionTitle: {
+    color: HOME.ink,
+    fontSize: scale(16),
+  },
+  sectionHint: {
+    color: HOME.muted,
+    fontSize: scale(12),
+  },
+});
 
 // ────────────────────────────────────────────────
 // Home Component
@@ -1497,10 +1898,23 @@ const handleSubmitScanBizCard = () => {
 
   useFocusEffect(
     useCallback(() => {
+      // Home hero is dark teal → light status bar while this screen is focused
+      StatusBar.setBarStyle('light-content', true);
+      if (Platform.OS === 'android') {
+        StatusBar.setBackgroundColor(HOME.teal, true);
+      }
+
       checkAppUpdate();
       checkThemeStatus();
       checkScanBizCardAccess(); // === SCAN BIZ CARD ===
       onRefresh();
+
+      return () => {
+        StatusBar.setBarStyle('default', true);
+        if (Platform.OS === 'android') {
+          StatusBar.setBackgroundColor('#61dafb', true);
+        }
+      };
     }, []),
   );
 
@@ -1518,8 +1932,17 @@ const handleSubmitScanBizCard = () => {
   const scanBizCardVisible =
     usrAccess !== 'Y' && !isCheckingScanAccess && showScanBizCard;
 
+  // ── Hero meta (real fields already present in auth context) ──
+  const empMeta = [
+    AppUserData?.data?.userId,
+    AppUserData?.data?.userDept,
+    AppUserData?.data?.empllocn,
+  ]
+    .filter(Boolean)
+    .join('  ·  ');
+
   return (
-    <SafeAreaView style={{flexGrow: 1}}>
+    <SafeAreaView style={{flexGrow: 1, backgroundColor: HOME.teal}}>
       {/* Snowflakes Background */}
       {isWinterThemeActive && (
         <View style={styles.snowContainer} pointerEvents="none">
@@ -1529,179 +1952,180 @@ const handleSubmitScanBizCard = () => {
         </View>
       )}
 
-      <View
+      <ScrollView
         style={styles.container}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        {/* Header */}
-        <View
-          colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
-          style={styles.gradient}>
-          <View>
-            <View style={styles.headerText1}>
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Ionicons
-                  name="menu-outline"
-                  size={30}
-                  color={GlobalColor.Primary}
-                  onPress={() => navigation.openDrawer()}
-                />
-                <Text style={[styles.brand, {marginLeft: 15}]} Bold>
-                  HR Assist
-                </Text>
-              </View>
+        contentContainerStyle={styles.scrollBody}
+        showsVerticalScrollIndicator={false}>
+        {/* ── Hero: identity + utilities ── */}
+        <LinearGradient
+          colors={[HOME.tealGlow, HOME.teal, HOME.tealDeep]}
+          start={{x: 0.92, y: 0}}
+          end={{x: 0.05, y: 1}}
+          style={homeStyles.hero}>
+          <View style={homeStyles.heroBar}>
+            <TouchableOpacity
+              onPress={() => navigation.openDrawer()}
+              activeOpacity={0.75}
+              style={homeStyles.brandPill}>
+              <Ionicons name="menu-outline" size={24} color={HOME.onDark} />
+              <Text style={homeStyles.brandLabel} Bold>
+                HR Assist
+              </Text>
+            </TouchableOpacity>
 
-              <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+            <View style={homeStyles.heroBarRight}>
+              <View style={homeStyles.logoChip}>
                 <Image
                   style={styles.tinyLogo}
                   source={require('./../assets/Images/mslogo.png')}
                 />
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Notification')}>
-                  <Feather name="bell" color={GlobalColor.Primary} size={20} />
-                </TouchableOpacity>
               </View>
-            </View>
-
-            <View style={styles.mainHeadName}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('EditProfile')}>
-                  {AppUserData.data && AppUserData.data.profile_photo ? (
-                    <Image
-                      source={{uri: AppUserData.data.profile_photo}}
-                      style={{width: 40, height: 40, borderRadius: 50}}
-                    />
-                  ) : (
-                    <Image
-                      source={require('../assets/Images/Avtar.png')}
-                      style={{width: 40, height: 40, borderRadius: 50}}
-                    />
-                  )}
-                </TouchableOpacity>
-
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('EditProfile')}
-                  style={{marginHorizontal: 10}}>
-                  <View style={{flexDirection: 'column'}}>
-                  <Text
-                      style={{
-                        fontSize: GlobalFontSize.P,
-                        color: GlobalColor.Primary,
-                        textTransform: 'capitalize',
-                        textDecorationLine: 'underline',
-                      }}
-                      Bold>
-                      {AppUserData.data && AppUserData?.data?.EMPL_NAME
-                        ? AppUserData?.data?.EMPL_NAME
-                        : 'User'}
-                    </Text>
-                    <View style={{flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center'}}>
-                    {/* === Shown whenever Scan Card is not visible (covers usrAccess === 'Y' too) === */}
-  {!scanBizCardVisible && (
-    <TouchableOpacity
-      onPress={() => navigation.navigate('EditProfile')}
-      style={{flexDirection: 'row', alignItems: 'center'}}>
-      <Ionicons name="person-outline" size={16} color="#43C6DB" />
-      <Text
-        Bold
-        style={{
-          fontSize: 14,
-          color: '#43C6DB',
-          marginLeft: 4,
-        }}>
-        My Profile
-      </Text>
-    </TouchableOpacity>
-  )}
-
-                      
-                      {usrAccess !== 'Y' && (
-  <TouchableOpacity
-    onPress={() => showBusinessCardModal()}
-    style={{flexDirection: 'row', alignItems: 'center',marginLeft: 10}}>
-    <Ionicons name="card-outline" size={16} color="#43C6DB" />
-    <Text
-      Bold
-      style={{
-        fontSize: 14,
-        color: '#43C6DB',
-        marginLeft: 4,
-      }}>
-      Business Card
-    </Text>
-  </TouchableOpacity>
-)}
-
-                      {/*
-                        === SCAN BIZ CARD: inline on the same row as My Business Card ===
-                        Shown only once access check resolves and access is granted.
-                      */}
-                     {scanBizCardVisible && (
-  <TouchableOpacity
-    onPress={handleOpenScanModal}
-    style={{flexDirection: 'row', alignItems: 'center', marginLeft: 10}}>
-    <Ionicons name="camera-outline" size={16} color="#43C6DB" />
-    <Text
-      Bold
-      style={{
-        fontSize: 14,
-        color: '#43C6DB',
-        marginLeft: 4,
-      }}>
-      Scan Card
-    </Text>
-  </TouchableOpacity>
-)}
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              {/*
-                === WHAT'S NEW slot ===
-                Always shown alongside Scan Biz Card now — only hidden for
-                usrAccess === 'Y' users (unchanged from original behaviour).
-              */}
-              {usrAccess == 'Y' ? null : (
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Whatsnew')}
-                  style={{marginHorizontal: 10}}>
-                  <Image
-                    style={{width: 85, height: 30}}
-                    source={require('./../assets/Images/whats_new.gif')}
-                  />
-                </TouchableOpacity>
-              )}
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Notification')}
+                activeOpacity={0.75}
+                style={homeStyles.iconBtn}
+                accessibilityRole="button"
+                accessibilityLabel="Notifications">
+                <Feather name="bell" color={HOME.onDark} size={20} />
+              </TouchableOpacity>
             </View>
           </View>
-        </View>
 
-        {/* Carousel */}
-        <View style={styles.carousel}>
+          <View style={homeStyles.identityRow}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditProfile')}
+              activeOpacity={0.85}
+              accessibilityLabel="My profile"
+              style={homeStyles.avatarRing}>
+              {AppUserData.data && AppUserData.data.profile_photo ? (
+                <Image
+                  source={{uri: AppUserData.data.profile_photo}}
+                  style={homeStyles.avatar}
+                />
+              ) : (
+                <Image
+                  source={require('../assets/Images/Avtar.png')}
+                  style={homeStyles.avatar}
+                />
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate('EditProfile')}
+              activeOpacity={0.85}
+              style={homeStyles.identityText}>
+              <Text style={homeStyles.greeting}>{getTimeGreeting()}</Text>
+              <Text style={homeStyles.userName} Bold numberOfLines={1}>
+                {AppUserData.data && AppUserData?.data?.EMPL_NAME
+                  ? AppUserData?.data?.EMPL_NAME
+                  : 'User'}
+              </Text>
+              {!!empMeta && (
+                <Text style={homeStyles.userMeta} numberOfLines={1}>
+                  {empMeta}
+                </Text>
+              )}
+            </TouchableOpacity>
+          </View>
+
+          <View style={homeStyles.pillRow}>
+            {/* Shown whenever Scan Card is not visible (covers usrAccess === 'Y' too) */}
+            {!scanBizCardVisible && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('EditProfile')}
+                activeOpacity={0.8}
+                style={homeStyles.glassPill}>
+                <Ionicons name="person-outline" size={15} color={HOME.amber} />
+                <Text style={homeStyles.glassPillText} Bold>
+                  My Profile
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {usrAccess !== 'Y' && (
+              <TouchableOpacity
+                onPress={() => showBusinessCardModal()}
+                activeOpacity={0.8}
+                style={homeStyles.glassPill}>
+                <Ionicons name="card-outline" size={15} color={HOME.amber} />
+                <Text style={homeStyles.glassPillText} Bold>
+                  Business Card
+                </Text>
+              </TouchableOpacity>
+            )}
+
+            {/* === SCAN BIZ CARD: same access rule and handler as before === */}
+            {scanBizCardVisible && (
+              <TouchableOpacity
+                onPress={handleOpenScanModal}
+                activeOpacity={0.8}
+                style={homeStyles.glassPill}>
+                <Ionicons name="camera-outline" size={15} color={HOME.amber} />
+                <Text style={homeStyles.glassPillText} Bold>
+                  Scan Card
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </LinearGradient>
+
+        {/* ── Announcements carousel (same images, same autoplay loop) ── */}
+        <View style={homeStyles.announceCard}>
+          <View style={homeStyles.announceBadge}>
+            <Text style={homeStyles.announceBadgeText} Bold>
+              ANNOUNCEMENTS
+            </Text>
+          </View>
           <SliderBox
             images={image}
             autoplay={true}
             circleLoop={true}
             style={styles.carouselimg}
-            sliderBoxHeight={220}
+            sliderBoxHeight={scale(168)}
             resizeMode={'cover'}
           />
         </View>
 
-        <TouchableCard navigation={navigation} />
-      </View>
+        <VisionStrip windowWidth={WIN_W} />
+
+        {/* ── What's new (same visibility rule + navigation) ── */}
+        {usrAccess == 'Y' ? null : (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Whatsnew')}
+            activeOpacity={0.85}
+            style={homeStyles.amberBanner}>
+            <View style={homeStyles.amberIcon}>
+              <Ionicons name="sparkles-outline" size={18} color={HOME.teal} />
+            </View>
+            <View style={homeStyles.amberBody}>
+              <Text style={homeStyles.amberTitle} Bold>
+                New in this release
+              </Text>
+              <Text style={homeStyles.amberSub} numberOfLines={1}>
+                See what the HR team has added
+              </Text>
+            </View>
+            <Image
+              style={homeStyles.whatsnewGif}
+              source={require('./../assets/Images/whats_new.gif')}
+            />
+            <Ionicons
+              name="chevron-forward"
+              size={18}
+              color={HOME.amberInk}
+            />
+          </TouchableOpacity>
+        )}
+
+        {/* ── Quick actions ── */}
+        <View style={homeStyles.sectionHead}>
+          <Text style={homeStyles.sectionTitle} Bold>
+            Quick actions
+          </Text>
+          <Text style={homeStyles.sectionHint}>Tap a service to open</Text>
+        </View>
+        <TouchableCard navigation={navigation} design="v2" />
+      </ScrollView>
 
       {/* ─────────────────────────────────────────────────────
           BUSINESS CARD MODAL
@@ -2497,54 +2921,12 @@ const scanStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: HOME.bg,
     fontFamily: 'Montserrat-Regular',
   },
-  gradient: {
-    width: '100%',
-    height: '25%',
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15,
-    zIndex: 0,
-  },
-  headerText1: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginHorizontal: 10,
-  },
-  brand: {
-    color: GlobalColor.Primary,
-    fontSize: GlobalFontSize.H4,
-    margin: 10,
-  },
-  whatsnew: {
-    width: 60,
-    height: 30,
-  },
-  mainHeadName: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingLeft: 10,
-    paddingRight: 0,
-  },
-  carousel: {
-    marginTop: -myconfig.deviceHeight * 0.1,
-    height: myconfig.deviceHeight * 0.28,
-    width: myconfig.deviceWidth,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: myconfig.deviceWidth * 0.01,
-    shadowOffset: {width: 0, height: myconfig.deviceHeight * 0.005},
-    shadowOpacity: 0.25,
-    shadowRadius: myconfig.deviceWidth * 0.02,
-    elevation: 5,
-    zIndex: 1,
-    marginBottom: myconfig.deviceHeight * 0.01,
-    borderWidth: 0.5,
-    borderColor: GlobalColor.Secondary,
+  scrollBody: {
+    // clears the absolutely-positioned floating tab bar from the navigator
+    paddingBottom: 96,
   },
   carouselimg: {
     minHeight: '100%',
@@ -2552,10 +2934,9 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   tinyLogo: {
-    width: 40,
-    height: 30,
+    width: 34,
+    height: 24,
     resizeMode: 'contain',
-    marginTop: 0,
   },
   RevtinyLogo: {
     width: 70,

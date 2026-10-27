@@ -4,6 +4,7 @@ import {View, StyleSheet, TouchableOpacity, Image,FlatList,SafeAreaView } from '
 import Share from 'react-native-share';
 import LinearGradient from 'react-native-linear-gradient';
 import myconfig from '../Utils/myconfig'
+import { HomeTheme, TILE_ACCENTS } from '../constants/HomeTheme';
 
 
 import { GlobalColor } from '../constants/Colors';
@@ -27,10 +28,12 @@ const myCustomeSharing =async () =>{
 }
 
 // create a component
-const TouchableCard = ({navigation}) => {
+// design: 'classic' (default, unchanged look) | 'v2' (teal + amber home grid)
+const TouchableCard = ({navigation, design = 'classic'}) => {
   const { authContext, AppUserData } = useContext(AuthContext);
 let usrAccess = AppUserData?.data?.userFlag;
 const insets = useSafeAreaInsets(); // dynamically fetch bottom safe area
+const isV2 = design === 'v2';
 
 // // console.log($1);
   const Data = [
@@ -86,6 +89,78 @@ const insets = useSafeAreaInsets(); // dynamically fetch bottom safe area
   ];
 
 
+  // Single source of truth for tile navigation (unchanged routes)
+  const goTo = item => {
+    if (item.name === 'Employee  Lookup') {
+      navigation.navigate('EmployeeNavs');
+    } else if (item.name === 'Attendance &  Admin') {
+      navigation.navigate('AttendanceAdminNav');
+    } else if (item.name === 'Comp. & Benefits') {
+      navigation.navigate('CompensationBenifitsNav');
+      // // console.log($1);
+    } else if (item.name === 'Hospital & Quick Dials') {
+      navigation.navigate('HospitalNavs');
+    } else if (item.name === 'Canteen  Menu') {
+      navigation.navigate('CanteeNavigator');
+    } else if (item.name === 'Gatepass & Room Booking') {
+      navigation.navigate('GatePassNavigator');
+    } else if (item.name === 'Other Mobile \n Apps') {
+      navigation.navigate('OtherApps');
+    } else if (item.name === 'Business  Travel') {
+      navigation.navigate('BusinessNavigator');
+    } else if (item.name === 'Add-On Menu') {
+      navigation.navigate('OtherMobilityNavigator');
+    }
+  };
+
+  if (isV2) {
+    const columns = 3;
+    const gutter = 10;
+    const sidePadding = 16;
+    const tileW =
+      (myconfig.deviceWidth - sidePadding * 2 - gutter * (columns - 1)) /
+      columns;
+    const visibleTiles = Data.filter(item => !!item.name);
+
+    return (
+      <View style={v2Styles.grid}>
+        {visibleTiles.map((item, i) => {
+          const accent = TILE_ACCENTS[i % TILE_ACCENTS.length];
+          const label = item.name.replace(/\s+/g, ' ').trim();
+          return (
+            <TouchableOpacity
+              key={item.id}
+              activeOpacity={0.85}
+              onPress={() => goTo(item)}
+              style={[
+                v2Styles.card,
+                {
+                  width: tileW,
+                  marginRight: (i + 1) % columns === 0 ? 0 : gutter,
+                  marginBottom: gutter,
+                },
+              ]}>
+              <View
+                style={[
+                  v2Styles.chip,
+                  {backgroundColor: accent.bg, borderColor: accent.bg},
+                ]}>
+                <Image
+                  source={item.images}
+                  style={v2Styles.cardimg}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={v2Styles.cardText} numberOfLines={2}>
+                {label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
+  }
+
     return (
       <SafeAreaView style={{ flex: 1, paddingHorizontal: 10 }}>
 
@@ -101,38 +176,7 @@ const insets = useSafeAreaInsets(); // dynamically fetch bottom safe area
           }}
           keyExtractor={item => item.id}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.card} onPress = {() =>{
-              if(item.name==='Employee  Lookup') {
-                navigation.navigate('EmployeeNavs');
-              }
-              else if(item.name==='Attendance &  Admin') {
-                navigation.navigate('AttendanceAdminNav');
-              }
-             else if(item.name==='Comp. & Benefits') {
-                navigation.navigate('CompensationBenifitsNav');
-                // // console.log($1);
-              }
-              else if(item.name==='Hospital & Quick Dials') {
-                navigation.navigate('HospitalNavs');
-              }
-              else if(item.name==='Canteen  Menu') {
-                navigation.navigate('CanteeNavigator');
-              }
-              else if(item.name==='Gatepass & Room Booking') {
-                navigation.navigate("GatePassNavigator");
-               }
-             else if(item.name==='Other Mobile \n Apps') {
-                navigation.navigate('OtherApps');
-              }
-              else if(item.name==='Business  Travel') {
-                navigation.navigate('BusinessNavigator');
-              }
-              else if(item.name==='Add-On Menu') {
-            
-                navigation.navigate('OtherMobilityNavigator');
-                
-                }
-            }}>
+            <TouchableOpacity style={styles.card} onPress = {() => goTo(item)}>
             <LinearGradient
               // colors={[GlobalColor.PrimaryGradient, GlobalColor.SecondryGradient]}
               colors={[GlobalColor.White, GlobalColor.White]}
@@ -141,9 +185,9 @@ const insets = useSafeAreaInsets(); // dynamically fetch bottom safe area
             </LinearGradient>
             <Text style={styles.cardText}>{item.name}</Text>
           </TouchableOpacity>
-           
+
             )}/>
-            </SafeAreaView>            
+            </SafeAreaView>
     )
           }
 // define your styles
@@ -189,6 +233,51 @@ const styles = StyleSheet.create({
     color: GlobalColor.Primary,
   },
   
+});
+
+// ── Home v2 (teal + amber) tile styles ──
+const v2Styles = StyleSheet.create({
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: 16,
+    marginTop: 12,
+  },
+  card: {
+    height: 96,
+    borderRadius: 18,
+    backgroundColor: HomeTheme.card,
+    borderWidth: 1,
+    borderColor: HomeTheme.line,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 6,
+    shadowColor: '#0B2A25',
+    shadowOffset: {width: 0, height: 2},
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
+  },
+  chip: {
+    width: 42,
+    height: 42,
+    borderRadius: 14,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cardimg: {
+    width: 24,
+    height: 24,
+  },
+  cardText: {
+    textAlign: 'center',
+    marginTop: 8,
+    fontSize: 11,
+    lineHeight: 14,
+    fontFamily: 'Roboto-Medium',
+    color: HomeTheme.ink,
+  },
 });
 
 //make this component available to the app
