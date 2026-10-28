@@ -157,9 +157,9 @@ describe('Home screen redesign', () => {
       (Array.isArray(st) ? st : [st]).filter(Boolean).reduce((a, x) => Object.assign(a, x), {});
     const hero = tree.root
       .findAll(n => typeof n.type === 'string')
-      .filter(n => flat(n.props.style).borderBottomRightRadius === 30);
+      .filter(n => flat(n.props.style).borderBottomRightRadius === 28);
     expect(hero.length).toBe(1);
-    expect(flat(hero[0].props.style).borderBottomLeftRadius).toBe(30);
+    expect(flat(hero[0].props.style).borderBottomLeftRadius).toBe(28);
     const gradient = tree.root.findAllByType('LinearGradient')[0];
     expect(gradient.props.colors).toEqual(['#3E9E90', '#2B8379', '#12403A']);
   });

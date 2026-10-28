@@ -25,6 +25,7 @@ import {
   PermissionsAndroid,
   Easing,
   StatusBar,
+  NativeModules,
 } from 'react-native';
 
 import Feather from 'react-native-vector-icons/Feather';
@@ -95,6 +96,13 @@ const scale = size => {
   const newSize = size * (winW / BASE_WIDTH);
   return Math.max(size * 0.85, Math.min(newSize, size * 1.15)); // clamp so tablets don't blow up
 };
+
+// ── Status-bar height, so the teal hero can bleed under it (iOS) ──
+const getTopInset = () =>
+  Platform.OS === 'ios' ? NativeModules.StatusBarManager?.height ?? 0 : 0;
+
+// ── Announcements banner height (the card clips to this) ──
+const BANNER_H = scale(196);
 
 // ── Dynamic cache key scoped per username ──
 const getBcCacheKey = username => `bc_card_cache_v1_${username}`;
@@ -823,11 +831,11 @@ const VisionStrip = ({windowWidth}) => {
 // ────────────────────────────────────────────────
 const homeStyles = StyleSheet.create({
   hero: {
-    paddingHorizontal: 18,
-    paddingTop: 14,
-    paddingBottom: 26,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    paddingHorizontal: 20,
+    paddingTop: 18,
+    paddingBottom: 22,
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
     overflow: 'hidden',
   },
   heroBar: {
@@ -864,9 +872,9 @@ const homeStyles = StyleSheet.create({
     height: 44,
     marginLeft: 8,
     borderRadius: 14,
-    backgroundColor: 'rgba(255,255,255,0.12)',
+    backgroundColor: 'rgba(255,255,255,0.1)',
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.2)',
+    borderColor: 'rgba(255,255,255,0.18)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -876,17 +884,17 @@ const homeStyles = StyleSheet.create({
     marginTop: 16,
   },
   avatarRing: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 46,
+    height: 46,
+    borderRadius: 23,
     borderWidth: 2,
-    borderColor: HOME.amber,
+    borderColor: 'rgba(255,255,255,0.7)',
     padding: 2,
   },
   avatar: {
     width: '100%',
     height: '100%',
-    borderRadius: 23,
+    borderRadius: 21,
     backgroundColor: HOME.tealSoft,
   },
   identityText: {
@@ -906,14 +914,14 @@ const homeStyles = StyleSheet.create({
   userMeta: {
     color: HOME.onDarkFaint,
     fontSize: scale(11),
-    marginTop: 3,
+    marginTop: 2,
     textTransform: 'uppercase',
     letterSpacing: 0.4,
   },
   pillRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginTop: 14,
+    marginTop: 12,
   },
   glassPill: {
     flexDirection: 'row',
@@ -934,9 +942,10 @@ const homeStyles = StyleSheet.create({
   },
 
   announceCard: {
+    height: BANNER_H,
     marginHorizontal: 16,
     marginTop: -14,
-    borderRadius: 22,
+    borderRadius: 20,
     overflow: 'hidden',
     backgroundColor: HOME.card,
     borderWidth: 1,
@@ -966,14 +975,14 @@ const homeStyles = StyleSheet.create({
   },
 
   visionCard: {
-    marginTop: 16,
+    marginTop: 20,
     marginLeft: 16,
-    borderRadius: 22,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: HOME.line,
     backgroundColor: HOME.card,
     paddingHorizontal: 16,
-    paddingTop: 14,
+    paddingTop: 16,
     paddingBottom: 12,
     overflow: 'hidden',
     shadowColor: '#0B2A25',
@@ -988,8 +997,8 @@ const homeStyles = StyleSheet.create({
   },
   visionKicker: {
     color: HOME.teal,
-    fontSize: scale(11),
-    letterSpacing: 1.6,
+    fontSize: scale(14),
+    letterSpacing: 1.8,
   },
   visionRule: {
     flex: 1,
@@ -1003,14 +1012,14 @@ const homeStyles = StyleSheet.create({
     marginLeft: 8,
   },
   visionBody: {
-    height: 52,
+    height: 50,
     justifyContent: 'center',
     marginTop: 8,
   },
   visionText: {
     color: HOME.tealInk,
     fontSize: scale(17),
-    lineHeight: scale(23),
+    lineHeight: scale(22),
   },
   visionDots: {
     flexDirection: 'row',
@@ -1041,10 +1050,10 @@ const homeStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 16,
-    marginTop: 16,
+    marginTop: 20,
     paddingVertical: 12,
     paddingHorizontal: 14,
-    borderRadius: 18,
+    borderRadius: 16,
     backgroundColor: HOME.amberSoft,
     borderWidth: 1,
     borderColor: '#EFDDB8',
@@ -1053,7 +1062,7 @@ const homeStyles = StyleSheet.create({
     width: 36,
     height: 36,
     marginRight: 12,
-    borderRadius: 11,
+    borderRadius: 10,
     backgroundColor: HOME.onDark,
     alignItems: 'center',
     justifyContent: 'center',
@@ -1082,8 +1091,8 @@ const homeStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginHorizontal: 18,
-    marginTop: 22,
+    marginHorizontal: 20,
+    marginTop: 24,
     marginBottom: 2,
   },
   sectionTitle: {
@@ -1941,8 +1950,11 @@ const handleSubmitScanBizCard = () => {
     .filter(Boolean)
     .join('  ·  ');
 
+  // Bleed the hero under the status bar so there is no white band above it
+  const topInset = getTopInset();
+
   return (
-    <SafeAreaView style={{flexGrow: 1, backgroundColor: HOME.teal}}>
+    <View style={[styles.root, {marginTop: -topInset}]}>
       {/* Snowflakes Background */}
       {isWinterThemeActive && (
         <View style={styles.snowContainer} pointerEvents="none">
@@ -1961,7 +1973,7 @@ const handleSubmitScanBizCard = () => {
           colors={[HOME.tealGlow, HOME.teal, HOME.tealDeep]}
           start={{x: 0.92, y: 0}}
           end={{x: 0.05, y: 1}}
-          style={homeStyles.hero}>
+          style={[homeStyles.hero, {paddingTop: 18 + topInset}]}>
           <View style={homeStyles.heroBar}>
             <TouchableOpacity
               onPress={() => navigation.openDrawer()}
@@ -2080,9 +2092,13 @@ const handleSubmitScanBizCard = () => {
             images={image}
             autoplay={true}
             circleLoop={true}
-            style={styles.carouselimg}
-            sliderBoxHeight={scale(168)}
+            sliderBoxHeight={BANNER_H}
+            parentWidth={WIN_W - 32}
+            ImageComponentStyle={{width: '100%', height: BANNER_H}}
             resizeMode={'cover'}
+            dotColor="rgba(255,255,255,0.55)"
+            activeDotColor={HOME.amber}
+            paginationBoxStyle={{bottom: 8}}
           />
         </View>
 
@@ -2527,7 +2543,7 @@ const handleSubmitScanBizCard = () => {
           />
         </Modal>
       )}
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -2919,19 +2935,17 @@ const scanStyles = StyleSheet.create({
 // Main / Home styles (unchanged)
 // ─────────────────────────────────────────────────────
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    backgroundColor: HOME.bg,
+  },
   container: {
     flex: 1,
     backgroundColor: HOME.bg,
-    fontFamily: 'Montserrat-Regular',
   },
   scrollBody: {
     // clears the absolutely-positioned floating tab bar from the navigator
     paddingBottom: 96,
-  },
-  carouselimg: {
-    minHeight: '100%',
-    minWidth: '100%',
-    resizeMode: 'cover',
   },
   tinyLogo: {
     width: 34,

@@ -151,7 +151,7 @@ const isV2 = design === 'v2';
                   resizeMode="contain"
                 />
               </View>
-              <Text style={v2Styles.cardText} numberOfLines={2}>
+              <Text style={v2Styles.cardText} Bold numberOfLines={2}>
                 {label}
               </Text>
             </TouchableOpacity>
@@ -244,7 +244,7 @@ const v2Styles = StyleSheet.create({
     marginTop: 12,
   },
   card: {
-    height: 96,
+    height: 92,
     borderRadius: 18,
     backgroundColor: HomeTheme.card,
     borderWidth: 1,
@@ -259,23 +259,22 @@ const v2Styles = StyleSheet.create({
     elevation: 2,
   },
   chip: {
-    width: 42,
-    height: 42,
-    borderRadius: 14,
+    width: 40,
+    height: 40,
+    borderRadius: 12,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   cardimg: {
-    width: 24,
-    height: 24,
+    width: 22,
+    height: 22,
   },
   cardText: {
     textAlign: 'center',
     marginTop: 8,
-    fontSize: 11,
-    lineHeight: 14,
-    fontFamily: 'Roboto-Medium',
+    fontSize: 12,
+    lineHeight: 15,
     color: HomeTheme.ink,
   },
 });
