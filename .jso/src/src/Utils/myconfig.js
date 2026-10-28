@@ -1,1 +1,0 @@
-Object.defineProperty(e,"__esModule",{value:!0}),e.default=e.DEBUG=void 0;var t=r(d[0]),n={deviceWidth:t.Dimensions.get('window').width,deviceHeight:t.Dimensions.get('window').height};e.DEBUG=!0;var o=n;e.default=o

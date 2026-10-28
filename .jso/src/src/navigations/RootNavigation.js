@@ -1,1 +1,0 @@
-Object.defineProperty(e,"__esModule",{value:!0}),e.navigate=function(t,o){n.isReady()&&n.navigate(t,o)},e.navigationRef=void 0;var n=(0,r(d[0]).createNavigationContainerRef)();e.navigationRef=n
