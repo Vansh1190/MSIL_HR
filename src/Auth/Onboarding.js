@@ -454,10 +454,10 @@ const OnboardingScreen = ({ navigation }) => {
     setLabel('Engine on');
     goto(ACT.LAUNCH);
     Animated.sequence([
-      Animated.timing(flash, { toValue: 1, duration: D.flash, easing: Easing.out(Easing.quad), useNativeDriver: false }),
-      Animated.timing(flash, { toValue: 0, duration: D.engineOn, easing: Easing.in(Easing.quad), useNativeDriver: false }),
+      Animated.timing(flash, { toValue: 1, duration: D.flash, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+      Animated.timing(flash, { toValue: 0, duration: D.engineOn, easing: Easing.in(Easing.quad), useNativeDriver: true }),
     ]).start();
-    Animated.timing(orb, { toValue: 1, duration: D.orb, easing: Easing.bezier(0.65, 0, 0.35, 1), useNativeDriver: false }).start();
+    Animated.timing(orb, { toValue: 1, duration: D.orb, easing: Easing.bezier(0.65, 0, 0.35, 1), useNativeDriver: true }).start();
     after(D.flash + D.orb * 0.6, finish);
   }, [after, finish, goto]);
 
@@ -499,7 +499,7 @@ const OnboardingScreen = ({ navigation }) => {
     if (act !== ACT.CAROUSEL && act !== ACT.OPEN) return undefined;
     Animated.parallel([
       Animated.timing(sceneIn, { toValue: 1, duration: D.spread, easing: Easing.bezier(0.32, 0.72, 0, 1), useNativeDriver: true }),
-      Animated.timing(heroIn, { toValue: 1, duration: D.spread, easing: Easing.bezier(0.32, 0.72, 0, 1), useNativeDriver: true }),
+      Animated.timing(heroIn, { toValue: 1, duration: D.spread, easing: Easing.bezier(0.32, 0.72, 0, 1), useNativeDriver: false }),
     ]).start();
     if (act === ACT.CAROUSEL) after(D.hold, () => goto(ACT.OPEN));
     return undefined;
@@ -509,8 +509,8 @@ const OnboardingScreen = ({ navigation }) => {
     if (act !== ACT.OPEN) return undefined;
     Animated.parallel([
       Animated.timing(open, { toValue: 1, duration: D.open, easing: Easing.bezier(0.65, 0, 0.35, 1), useNativeDriver: false }),
-      Animated.timing(lightOut, { toValue: 1, duration: D.open * 0.4, easing: Easing.in(Easing.quad), useNativeDriver: false }),
-      Animated.timing(sceneInDark, { toValue: 1, duration: D.open, delay: D.open * 0.3, easing: Easing.out(Easing.cubic), useNativeDriver: false }),
+      Animated.timing(lightOut, { toValue: 1, duration: D.open * 0.4, easing: Easing.in(Easing.quad), useNativeDriver: true }),
+      Animated.timing(sceneInDark, { toValue: 1, duration: D.open, delay: D.open * 0.3, easing: Easing.out(Easing.cubic), useNativeDriver: true }),
     ]).start();
     after(D.open, () => goto(ACT.COCKPIT));
     return undefined;
@@ -528,7 +528,7 @@ const OnboardingScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (act !== ACT.START || launched.current) return undefined;
-    Animated.timing(shadeIn, { toValue: 1, duration: D.shadeIn, easing: Easing.out(Easing.quad), useNativeDriver: false }).start();
+    Animated.timing(shadeIn, { toValue: 1, duration: D.shadeIn, easing: Easing.out(Easing.quad), useNativeDriver: true }).start();
     return undefined;
   }, [act]);
 
@@ -536,8 +536,8 @@ const OnboardingScreen = ({ navigation }) => {
     if (act < ACT.COCKPIT || launched.current) return undefined;
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(breathing, { toValue: 1, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: false }),
-        Animated.timing(breathing, { toValue: 0.4, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: false }),
+        Animated.timing(breathing, { toValue: 1, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
+        Animated.timing(breathing, { toValue: 0.4, duration: 1400, easing: Easing.inOut(Easing.sin), useNativeDriver: true }),
       ]),
     );
     loop.start();
@@ -643,7 +643,7 @@ const OnboardingScreen = ({ navigation }) => {
   const current = PAGES[Math.min(page, LAST)];
   const previous = page > 0 ? PAGES[page - 1] : null;
   const copying = act === ACT.START || act === ACT.LAUNCH;
-  const lightOpacity = act >= ACT.OPEN ? lightOut.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }) : 1;
+  const lightOpacity = lightOut.interpolate({ inputRange: [0, 1], outputRange: [1, 0] });
 
   const copyBlock = useMemo(
     () => (
@@ -712,7 +712,7 @@ const OnboardingScreen = ({ navigation }) => {
         )}
 
         {mounted.dark && (
-          <Animated.View style={[StyleSheet.absoluteFill, { opacity: act === ACT.OPEN ? sceneInDark : 1 }]}>
+          <Animated.View style={[StyleSheet.absoluteFill, { opacity: sceneInDark }]}>
             <View style={styles.photoClip}>
               {previous && act === ACT.COCKPIT && (
                 <Image source={previous.photo} style={photoBox(previous.y)} resizeMode="stretch" accessibilityIgnoresInvertColors />

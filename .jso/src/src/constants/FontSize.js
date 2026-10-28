@@ -1,0 +1,1 @@
+Object.defineProperty(e,"__esModule",{value:!0}),e.GlobalFontSize=void 0;var l={H1:(0,r(d[0]).RFValue)(26),H2:(0,r(d[0]).RFValue)(22),H4:(0,r(d[0]).RFValue)(18),P:(0,r(d[0]).RFValue)(14),Small:(0,r(d[0]).RFValue)(14),Error:(0,r(d[0]).RFValue)(12),TabTitle:(0,r(d[0]).RFValue)(10)};e.GlobalFontSize=l

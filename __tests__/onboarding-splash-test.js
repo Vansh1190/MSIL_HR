@@ -144,3 +144,63 @@ describe('Onboarding splash revamp', () => {
     run(20000);
   });
 });
+
+describe('animated driver discipline', () => {
+  const source = require('fs').readFileSync(
+    require('path').join(__dirname, '..', 'src', 'Auth', 'Onboarding.js'),
+    'utf8',
+  );
+
+  const driverOf = {};
+  const timing = /Animated\.timing\((\w+),\s*\{([^}]*)\}/g;
+  let match;
+  while ((match = timing.exec(source)) !== null) {
+    const name = match[1];
+    const native = /useNativeDriver:\s*(true|false)/.exec(match[2]);
+    expect(native).not.toBeNull();
+    const value = native[1] === 'true';
+    if (driverOf[name] !== undefined) {
+      expect(driverOf[name]).toBe(value);
+    }
+    driverOf[name] = value;
+  }
+
+  const LAYOUT = ['width', 'height', 'left', 'top', 'right', 'bottom', 'borderRadius'];
+
+  it('animates every opacity/transform value on the native driver', () => {
+    expect(Object.keys(driverOf).length).toBeGreaterThan(6);
+    expect(driverOf.spin).toBe(true);
+    expect(driverOf.drift).toBe(true);
+    expect(driverOf.breathing).toBe(true);
+    expect(driverOf.lightOut).toBe(true);
+    expect(driverOf.sceneInDark).toBe(true);
+    expect(driverOf.photoIn).toBe(true);
+    expect(driverOf.sceneIn).toBe(true);
+  });
+
+  it('keeps layout-driven values on the js driver', () => {
+    expect(driverOf.open).toBe(false);
+    expect(driverOf.heroIn).toBe(false);
+    expect(driverOf.progress).toBe(false);
+  });
+
+  it('never lets a native-driver value drive a layout style property', () => {
+    let seen = 0;
+    LAYOUT.forEach((prop) => {
+      const re = new RegExp('(?:^|[,{\\s])' + prop + ':\\s*(\\w+)\\.interpolate', 'gm');
+      let found;
+      while ((found = re.exec(source)) !== null) {
+        seen += 1;
+        expect(driverOf[found[1]]).toBe(false);
+      }
+    });
+    expect(seen).toBeGreaterThan(5);
+  });
+
+  it('binds a single style property to a single driver', () => {
+    const styleBlocks = source.split('styles.').length;
+    expect(styleBlocks).toBeGreaterThan(1);
+    expect(source).not.toMatch(/opacity:\s*act === ACT\.OPEN/);
+    expect(source).not.toMatch(/lightOpacity = act >=/);
+  });
+});

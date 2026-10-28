@@ -1,0 +1,1 @@
+Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var o=r(d[0])(r(d[1])),l=r(d[0])(r(d[2])),t=r(d[3]);e.default=function(n){return l.default.createElement(t.Text,(0,o.default)({},n,{style:[{fontFamily:n.Bold?'Roboto-Bold':'Roboto-Regular',fontSize:r(d[4]).GlobalFontSize.P,color:r(d[5]).GlobalColor.Text},n.style]}),n.children)}

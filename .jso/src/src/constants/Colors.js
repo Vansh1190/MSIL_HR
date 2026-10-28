@@ -1,0 +1,1 @@
+Object.defineProperty(e,"__esModule",{value:!0}),e.GlobalColor=void 0;e.GlobalColor={PrimaryGradient:'#499fd0',SecondryGradient:'#0083B0',Primary:'#192a56',PrimaryLight:"#ebf4fa",Secondary:'#43C6DB',Text:"#444",Dark:"#000",Light:"#f8f9fa",LightDark:'#7f8c8d',White:"#fff",Black:"#000",ShadowColor:"#000",Danger:'#f00'}
