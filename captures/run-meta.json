@@ -1,0 +1,68 @@
+{
+  "device": "440x956 @2x (pixel-7 style)",
+  "frames": 2872,
+  "recordedSeconds": 53.06,
+  "stills": 35,
+  "actions": [
+    {
+      "t": 0,
+      "action": "recording started — onboarding act 1: bloom"
+    },
+    {
+      "t": 14.24,
+      "action": "cycle 1: START screen reached (auto-play finished)"
+    },
+    {
+      "t": 14.28,
+      "action": "touch down on START"
+    },
+    {
+      "t": 15.97,
+      "action": "touch up — engine on"
+    },
+    {
+      "t": 16.6,
+      "action": "cycle 1: onboarding persisted, navigator pushed SignIn"
+    },
+    {
+      "t": 17.83,
+      "action": "cycle 1: replay onboarding from bloom"
+    },
+    {
+      "t": 32.45,
+      "action": "cycle 2: START screen reached (auto-play finished)"
+    },
+    {
+      "t": 32.5,
+      "action": "touch down on START"
+    },
+    {
+      "t": 34.19,
+      "action": "touch up — engine on"
+    },
+    {
+      "t": 34.8,
+      "action": "cycle 2: onboarding persisted, navigator pushed SignIn"
+    },
+    {
+      "t": 36.02,
+      "action": "cycle 2: replay onboarding from bloom"
+    },
+    {
+      "t": 50.64,
+      "action": "cycle 3: START screen reached (auto-play finished)"
+    },
+    {
+      "t": 50.67,
+      "action": "touch down on START"
+    },
+    {
+      "t": 52.36,
+      "action": "touch up — engine on"
+    },
+    {
+      "t": 52.99,
+      "action": "cycle 3: onboarding persisted, navigator pushed SignIn"
+    }
+  ]
+}

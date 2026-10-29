@@ -1,0 +1,16 @@
+[0.50s][console.error] Failed to load resource: the server responded with a status of 404 (Not Found)
+[0.00s] recording started — onboarding act 1: bloom
+[14.24s] cycle 1: START screen reached (auto-play finished)
+[14.28s] touch down on START
+[15.97s] touch up — engine on
+[16.60s] cycle 1: onboarding persisted, navigator pushed SignIn
+[17.83s] cycle 1: replay onboarding from bloom
+[32.45s] cycle 2: START screen reached (auto-play finished)
+[32.50s] touch down on START
+[34.19s] touch up — engine on
+[34.80s] cycle 2: onboarding persisted, navigator pushed SignIn
+[36.02s] cycle 2: replay onboarding from bloom
+[50.64s] cycle 3: START screen reached (auto-play finished)
+[50.67s] touch down on START
+[52.36s] touch up — engine on
+[52.99s] cycle 3: onboarding persisted, navigator pushed SignIn
