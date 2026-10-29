@@ -39,4 +39,14 @@ allprojects {
         google()
         maven { url 'https://www.jitpack.io' }
     }
+
+    // AGP 4.2's Jetifier cannot parse Java 17 class files (major version 61)
+    // found in annotation-experimental 1.4.1; pin to a Java 8 compatible version.
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.annotation:annotation-experimental:1.0.0'
+            // webkit >=1.6 requires compileSdk 33/34; pin to API 31 compatible version
+            force 'androidx.webkit:webkit:1.4.0'
+        }
+    }
 }

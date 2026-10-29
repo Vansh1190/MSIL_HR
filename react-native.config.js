@@ -11,5 +11,10 @@ module.exports = {
                 android: null,
             },
         },
+        'react-native-screen-capture-secure': {
+            platforms: {
+                android: null,
+            },
+        },
     },
 }
